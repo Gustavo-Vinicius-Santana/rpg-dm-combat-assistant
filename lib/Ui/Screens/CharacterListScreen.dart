@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Components/Buttons/ButtonAddItemList.dart';
 
 class Characterlistscreen extends StatefulWidget {
   const Characterlistscreen({super.key});
@@ -15,6 +16,14 @@ class _CharacterlistscreenState extends State<Characterlistscreen> {
           title: const Center(
         child: Text('Personagens'),
       )),
+      body: Center(
+        child: Column(children: <Widget>[
+          ButtonAddItemList(
+            action: () {},
+            label: 'Adicionar personagem',
+          ),
+        ]),
+      ),
     );
   }
 }
