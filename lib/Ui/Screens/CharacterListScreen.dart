@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Components/Buttons/ButtonAddItemList.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Components/Lists/ListSimple.dart';
 
 class Characterlistscreen extends StatefulWidget {
   const Characterlistscreen({super.key});
@@ -15,6 +17,26 @@ class _CharacterlistscreenState extends State<Characterlistscreen> {
           title: const Center(
         child: Text('Personagens'),
       )),
+      body: Column(
+        children: [
+          Center(
+            child: ButtonAddItemList(
+              action: () {},
+              label: 'Adicionar personagem',
+            ),
+          ),
+          Center(
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.9,
+              height: MediaQuery.of(context).size.height * 0.6,
+              child: const ListSimple(
+                selectIcon: 0,
+                emptyList: 'Não há jogadores cadastrado',
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

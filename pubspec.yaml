@@ -64,6 +64,9 @@ flutter:
     - assets/personagem_icone.svg
     - assets/combate_icone.svg
     - assets/monstro_icone.svg
+    - assets/combate_espadas_icone.svg
+    - assets/monstros_cabeca_icone.svg
+    - assets/jogador_cabeca_icone.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
