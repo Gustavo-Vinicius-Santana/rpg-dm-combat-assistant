@@ -30,6 +30,7 @@ class _CombatlistscreenState extends State<Combatlistscreen> {
               height: MediaQuery.of(context).size.height * 0.6,
               child: const ListSimple(
                 selectIcon: 2,
+                emptyList: 'Não há combates cadastrados',
               ),
             ),
           )

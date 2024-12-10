@@ -30,6 +30,7 @@ class _MonsterlistscreenState extends State<Monsterlistscreen> {
               height: MediaQuery.of(context).size.height * 0.6,
               child: const ListSimple(
                 selectIcon: 1,
+                emptyList: 'Não há monstros cadastrados',
               ),
             ),
           )

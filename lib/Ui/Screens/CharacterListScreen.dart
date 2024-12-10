@@ -31,6 +31,7 @@ class _CharacterlistscreenState extends State<Characterlistscreen> {
               height: MediaQuery.of(context).size.height * 0.6,
               child: const ListSimple(
                 selectIcon: 0,
+                emptyList: 'Não há jogadores cadastrado',
               ),
             ),
           )
