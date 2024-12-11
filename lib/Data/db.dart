@@ -30,6 +30,19 @@ class DB {
 
     await db.execute(_conditionsTable);
     await db.execute(_personsInCombatTable);
+
+    // INSERT TEST DATA
+    await db.insert('characters', {
+      'player': 'Player 1',
+      'name': 'Character 1',
+      'armor': 'Light',
+      'lifeMax': 100,
+      'lifeActual': 100,
+      'condition_1': 'Alive',
+      'condition_2': 'Alive',
+      'condition_3': 'Alive',
+      'condition_4': 'Alive',
+    });
   }
 
   static const String _characterTable = '''
