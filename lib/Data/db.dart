@@ -42,7 +42,7 @@ class DB {
       lifeActual INTEGER NOT NULL,
       condition_1 TEXT NOT NULL,
       condition_2 TEXT NOT NULL,
-      condition_3 TEXT NOT NULL
+      condition_3 TEXT NOT NULL,
       condition_4 TEXT NOT NULL
     )
   ''';
@@ -52,14 +52,14 @@ class DB {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       turns INTEGER NOT NULL,
-      time TEXT NOT NULL,
+      time TEXT NOT NULL
     )
  ''';
 
   static const String _conditionsTable = '''
     CREATE TABLE conditions(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name_id TEXT NOT NULL,
+      name_id TEXT NOT NULL
       
     )
   ''';
