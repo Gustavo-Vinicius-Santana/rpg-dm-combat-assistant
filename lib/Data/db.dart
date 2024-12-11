@@ -27,6 +27,9 @@ class DB {
     await db.execute(_characterTable);
     await db.execute(_combatTable);
     await db.execute(_monsterTable);
+
+    await db.execute(_conditionsTable);
+    await db.execute(_personsInCombatTable);
   }
 
   static const String _characterTable = '''
@@ -37,7 +40,11 @@ class DB {
       armor TEXT NOT NULL,
       lifeMax INTEGER NOT NULL,
       lifeActual INTEGER NOT NULL,
-      condition TEXT NOT NULL,
+      condition_1 TEXT NOT NULL,
+      condition_2 TEXT NOT NULL,
+      condition_3 TEXT NOT NULL
+      condition_4 TEXT NOT NULL
+    )
   ''';
 
   static const String _combatTable = '''
@@ -46,9 +53,25 @@ class DB {
       name TEXT NOT NULL,
       turns INTEGER NOT NULL,
       time TEXT NOT NULL,
-      players TEXT NOT NULL,
-      monsters TEXT NOT NULL,
+    )
  ''';
+
+  static const String _conditionsTable = '''
+    CREATE TABLE conditions(
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name_id TEXT NOT NULL,
+      
+    )
+  ''';
+
+  static const String _personsInCombatTable = '''
+    CREATE TABLE persons_in_combat(
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      combat_id INTEGER NOT NULL,
+      character_id INTEGER NOT NULL,
+      monster_id INTEGER NOT NULL
+    )
+  ''';
 
   static const String _monsterTable = '''
     CREATE TABLE monsters(
@@ -58,5 +81,6 @@ class DB {
       lifeMax INTEGER NOT NULL,
       lifeActual INTEGER NOT NULL,
       condition TEXT NOT NULL
+    )
  ''';
 }
