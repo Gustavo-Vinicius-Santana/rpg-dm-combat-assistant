@@ -31,6 +31,7 @@ class _CombatlistscreenState extends State<Combatlistscreen> {
               child: const ListSimple(
                 selectIcon: 2,
                 emptyList: 'Não há combates cadastrados',
+                itemsList: [],
               ),
             ),
           )

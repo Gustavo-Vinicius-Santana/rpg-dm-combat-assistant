@@ -31,6 +31,7 @@ class _MonsterlistscreenState extends State<Monsterlistscreen> {
               child: const ListSimple(
                 selectIcon: 1,
                 emptyList: 'Não há monstros cadastrados',
+                itemsList: [],
               ),
             ),
           )
