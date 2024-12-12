@@ -28,7 +28,7 @@ class _CombatlistscreenState extends State<Combatlistscreen> {
     });
 
     try {
-      await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(milliseconds: 500));
       final combats = await _combatsRepository.getAllCombats();
       setState(() {
         _combats = combats;

@@ -28,7 +28,7 @@ class _MonsterlistscreenState extends State<Monsterlistscreen> {
     });
 
     try {
-      await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(milliseconds: 500));
       _monsters = await _monstersRepository.getAllMonsters();
       setState(() {
         _isLoading = false;
