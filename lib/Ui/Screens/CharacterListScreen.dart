@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rpg_dm_combat_assistant/Data/repositories/character_repository.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Buttons/ButtonAddItemList.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Lists/ListSimple.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Components/Loadings/Loading.dart';
 
 class Characterlistscreen extends StatefulWidget {
   const Characterlistscreen({super.key});
@@ -25,12 +26,20 @@ class _CharacterlistscreenState extends State<Characterlistscreen> {
     setState(() {
       _isLoading = true;
     });
-    final characters = await _repository.getAllCharacters();
-    setState(() {
-      _characters = characters;
-      _isLoading = false;
-      print(_characters);
-    });
+
+    try {
+      await Future.delayed(const Duration(seconds: 1));
+      final characters = await _repository.getAllCharacters();
+      setState(() {
+        _characters = characters;
+      });
+    } catch (e) {
+      print('Erro ao carregar personagens: $e');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -40,27 +49,31 @@ class _CharacterlistscreenState extends State<Characterlistscreen> {
           title: const Center(
         child: Text('Personagens'),
       )),
-      body: Column(
-        children: [
-          Center(
-            child: ButtonAddItemList(
-              action: () {},
-              label: 'Adicionar personagem',
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : Column(
+              children: [
+                Center(
+                  child: ButtonAddItemList(
+                    action: () {},
+                    label: 'Adicionar personagem',
+                  ),
+                ),
+                Center(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    height: MediaQuery.of(context).size.height * 0.6,
+                    child: ListSimple(
+                      selectIcon: 0,
+                      emptyList: 'Não há jogadores cadastrado',
+                      itemsList: _characters,
+                    ),
+                  ),
+                )
+              ],
             ),
-          ),
-          Center(
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.9,
-              height: MediaQuery.of(context).size.height * 0.6,
-              child: ListSimple(
-                selectIcon: 0,
-                emptyList: 'Não há jogadores cadastrado',
-                itemsList: _characters,
-              ),
-            ),
-          )
-        ],
-      ),
     );
   }
 }
