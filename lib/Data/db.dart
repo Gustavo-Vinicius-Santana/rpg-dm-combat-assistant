@@ -51,6 +51,12 @@ class DB {
       'lifeActual': 100,
       'condition': 'Alive',
     });
+
+    await db.insert('combats', {
+      'name': 'Combat 1',
+      'turns': 1,
+      'time': '30',
+    });
   }
 
   static const String _characterTable = '''

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Buttons/ButtonAddItemList.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Lists/ListSimple.dart';
+import 'package:rpg_dm_combat_assistant/Data/repositories/combats_repository.dart';
 
 class Combatlistscreen extends StatefulWidget {
   const Combatlistscreen({super.key});
@@ -10,6 +11,27 @@ class Combatlistscreen extends StatefulWidget {
 }
 
 class _CombatlistscreenState extends State<Combatlistscreen> {
+  final CombatsRepository _combatsRepository = CombatsRepository();
+  List<Map<String, dynamic>> _combats = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCombats();
+  }
+
+  Future<void> _loadCombats() async {
+    setState(() {
+      isLoading = true;
+    });
+    final combats = await _combatsRepository.getAllCombats();
+    setState(() {
+      _combats = combats;
+      isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,10 +50,10 @@ class _CombatlistscreenState extends State<Combatlistscreen> {
             child: Container(
               width: MediaQuery.of(context).size.width * 0.9,
               height: MediaQuery.of(context).size.height * 0.6,
-              child: const ListSimple(
+              child: ListSimple(
                 selectIcon: 2,
                 emptyList: 'Não há combates cadastrados',
-                itemsList: [],
+                itemsList: _combats,
               ),
             ),
           )
