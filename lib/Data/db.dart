@@ -43,6 +43,14 @@ class DB {
       'condition_3': 'Alive',
       'condition_4': 'Alive',
     });
+
+    await db.insert('monsters', {
+      'name': 'Monster 1',
+      'armor': 'Light',
+      'lifeMax': 100,
+      'lifeActual': 100,
+      'condition': 'Alive',
+    });
   }
 
   static const String _characterTable = '''
