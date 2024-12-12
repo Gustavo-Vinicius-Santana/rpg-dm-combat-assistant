@@ -51,7 +51,7 @@ class _CharacterlistscreenState extends State<Characterlistscreen> {
       )),
       body: _isLoading
           ? const Center(
-              child: CircularProgressIndicator(),
+              child: Loading(),
             )
           : Column(
               children: [
