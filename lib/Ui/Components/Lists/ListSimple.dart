@@ -59,7 +59,7 @@ class _ListSimpleState extends State<ListSimple> {
                       width: 5,
                     ),
                     Text(
-                      widget.itemsList[index]['player'],
+                      widget.itemsList[index]['name'],
                       textAlign: TextAlign.center,
                     ),
                   ],
