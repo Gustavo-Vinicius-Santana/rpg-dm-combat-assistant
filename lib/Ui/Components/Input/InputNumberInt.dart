@@ -38,6 +38,7 @@ class _InputNumberIntState extends State<InputNumberInt> {
               : null,
           hintStyle: const TextStyle(color: Colors.grey),
           floatingLabelBehavior: FloatingLabelBehavior.always,
+          floatingLabelAlignment: FloatingLabelAlignment.center,
           labelStyle: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
@@ -51,6 +52,7 @@ class _InputNumberIntState extends State<InputNumberInt> {
             borderSide: BorderSide(color: Colors.black, width: 2),
           ),
         ),
+        textAlign: TextAlign.center,
         keyboardType: TextInputType.number,
         inputFormatters: [
           FilteringTextInputFormatter.allow(RegExp(r'^[0-9]*$')),
