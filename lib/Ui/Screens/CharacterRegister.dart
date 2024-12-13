@@ -11,6 +11,94 @@ class CharacterRegister extends StatefulWidget {
 }
 
 class _CharacterRegisterState extends State<CharacterRegister> {
+  final TextEditingController _namePlayerController = TextEditingController();
+  final TextEditingController _nameCharacterController =
+      TextEditingController();
+  final TextEditingController _armorController = TextEditingController();
+  final TextEditingController _maxHealthController = TextEditingController();
+  final TextEditingController _minHealthController = TextEditingController();
+
+  String? _messageErrorNamePlayer;
+  String? _messageErrorNameCharacter;
+  String? _messageErrorArmor;
+  String? _messageErrorMaxHealth;
+  String? _messageErrorMinHealth;
+
+  @override
+  void initState() {
+    super.initState();
+    _namePlayerController.addListener(() {
+      _clearErrorMessage(_messageErrorNamePlayer);
+    });
+    _nameCharacterController.addListener(() {
+      _clearErrorMessage(_messageErrorNameCharacter);
+    });
+    _armorController.addListener(() {
+      _clearErrorMessage(_messageErrorArmor);
+    });
+    _maxHealthController.addListener(() {
+      _clearErrorMessage(_messageErrorMaxHealth);
+    });
+    _minHealthController.addListener(() {
+      _clearErrorMessage(_messageErrorMinHealth);
+    });
+  }
+
+  void _clearErrorMessage(String? errorMessage) {
+    if (errorMessage != null) {
+      setState(() {
+        errorMessage = null;
+      });
+    }
+
+    setState(() {
+      if (_namePlayerController.text.isNotEmpty) {
+        _messageErrorNamePlayer = null;
+      }
+      if (_nameCharacterController.text.isNotEmpty) {
+        _messageErrorNameCharacter = null;
+      }
+      if (_armorController.text.isNotEmpty) {
+        _messageErrorArmor = null;
+      }
+      if (_maxHealthController.text.isNotEmpty) {
+        _messageErrorMaxHealth = null;
+      }
+      if (_minHealthController.text.isNotEmpty) {
+        _messageErrorMinHealth = null;
+      }
+    });
+  }
+
+  void _registerCharacter() {
+    final namePlayer = _namePlayerController.text;
+    final nameCharacter = _nameCharacterController.text;
+    final armor = _armorController.text;
+    final maxHealth = _maxHealthController.text;
+    final minHealth = _minHealthController.text;
+
+    if (namePlayer.isEmpty ||
+        nameCharacter.isEmpty ||
+        armor.isEmpty ||
+        maxHealth.isEmpty ||
+        minHealth.isEmpty) {
+      setState(() {
+        _messageErrorNamePlayer =
+            namePlayer.isEmpty ? 'campo obrigatório.' : null;
+        _messageErrorNameCharacter =
+            nameCharacter.isEmpty ? 'campo obrigatório.' : null;
+        _messageErrorArmor = armor.isEmpty ? 'campo obrigatório.' : null;
+        _messageErrorMaxHealth =
+            maxHealth.isEmpty ? 'campo obrigatório.' : null;
+        _messageErrorMinHealth =
+            minHealth.isEmpty ? 'campo obrigatório.' : null;
+      });
+    } else {
+      // Lógica para registrar o personagem
+      print("Personagem registrado com sucesso!");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,9 +110,9 @@ class _CharacterRegisterState extends State<CharacterRegister> {
           children: [
             Center(
               child: InputText(
-                controller: TextEditingController(),
+                controller: _namePlayerController,
                 maxLength: 20,
-                errorMessage: null,
+                errorMessage: _messageErrorNamePlayer,
                 placeholder: 'Nome do jogador',
                 label: 'JOGADOR',
               ),
@@ -32,17 +120,17 @@ class _CharacterRegisterState extends State<CharacterRegister> {
             const SizedBox(height: 20),
             Center(
               child: InputText(
-                controller: TextEditingController(),
+                controller: _nameCharacterController,
                 maxLength: 20,
-                errorMessage: null,
+                errorMessage: _messageErrorNameCharacter,
                 placeholder: 'Nome do personagem',
                 label: 'PERSONAGEM',
               ),
             ),
             const SizedBox(height: 20),
             InputNumberInt(
-              controller: TextEditingController(),
-              errorMessage: null,
+              controller: _armorController,
+              errorMessage: _messageErrorArmor,
               label: 'ARMADURA',
             ),
             const SizedBox(height: 20),
@@ -50,13 +138,13 @@ class _CharacterRegisterState extends State<CharacterRegister> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 InputNumberInt(
-                  controller: TextEditingController(),
-                  errorMessage: null,
+                  controller: _maxHealthController,
+                  errorMessage: _messageErrorMaxHealth,
                   label: 'VIDA MAXIMA',
                 ),
                 InputNumberInt(
-                  controller: TextEditingController(),
-                  errorMessage: null,
+                  controller: _minHealthController,
+                  errorMessage: _messageErrorMinHealth,
                   label: 'VIDA MINIMA',
                 )
               ],
@@ -64,7 +152,7 @@ class _CharacterRegisterState extends State<CharacterRegister> {
             const SizedBox(height: 30),
             Center(
               child: ButtonFormConfirm(
-                register: () {},
+                register: _registerCharacter,
                 textInButton: 'CADASTRAR',
               ),
             )
