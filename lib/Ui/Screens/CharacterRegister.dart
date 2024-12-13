@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Buttons/ButtonFormConfirm.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Input/InputText.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Input/InputNumberInt.dart';
+import 'package:rpg_dm_combat_assistant/Data/Repositories/character_repository.dart';
 
 class CharacterRegister extends StatefulWidget {
   const CharacterRegister({super.key});
@@ -11,6 +12,7 @@ class CharacterRegister extends StatefulWidget {
 }
 
 class _CharacterRegisterState extends State<CharacterRegister> {
+  final CharacterRepository _characterRepository = CharacterRepository();
   final TextEditingController _namePlayerController = TextEditingController();
   final TextEditingController _nameCharacterController =
       TextEditingController();
@@ -70,7 +72,7 @@ class _CharacterRegisterState extends State<CharacterRegister> {
     });
   }
 
-  void _registerCharacter() {
+  void _registerCharacter() async {
     final namePlayer = _namePlayerController.text;
     final nameCharacter = _nameCharacterController.text;
     final armor = _armorController.text;
@@ -94,8 +96,48 @@ class _CharacterRegisterState extends State<CharacterRegister> {
             minHealth.isEmpty ? 'campo obrigatório.' : null;
       });
     } else {
-      // Lógica para registrar o personagem
-      print("Personagem registrado com sucesso!");
+      // Montando o mapa com os dados do personagem
+      Map<String, dynamic> character = {
+        'player': namePlayer,
+        'name': nameCharacter,
+        'armor': armor,
+        'lifeMax': int.parse(maxHealth),
+        'lifeActual': int.parse(minHealth),
+        'condition_1': 'alive',
+        'condition_2': 'alive',
+        'condition_3': 'alive',
+        'condition_4': 'alive',
+      };
+
+      try {
+        // Inserindo no banco de dados
+        final id = await _characterRepository.insertCharacter(character);
+        print("Personagem registrado com sucesso! ID: $id");
+
+        // Limpando os campos após o registro
+        _namePlayerController.clear();
+        _nameCharacterController.clear();
+        _armorController.clear();
+        _maxHealthController.clear();
+        _minHealthController.clear();
+
+        setState(() {
+          _messageErrorNamePlayer = null;
+          _messageErrorNameCharacter = null;
+          _messageErrorArmor = null;
+          _messageErrorMaxHealth = null;
+          _messageErrorMinHealth = null;
+        });
+
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/',
+          (route) => false,
+          arguments: 0,
+        );
+      } catch (e) {
+        print("Erro ao registrar personagem: $e");
+      }
     }
   }
 

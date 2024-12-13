@@ -34,6 +34,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // Recuperando o argumento da rota, se disponível
+    final Object? arguments = ModalRoute.of(context)?.settings.arguments;
+    if (arguments is int) {
+      // Se o argumento for um inteiro, atualize o índice selecionado
+      _selectedIndex = arguments;
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
