@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Screens/CharacterRegister.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Screens/MyHomePage.dart';
 
 void main() {
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         '/': (context) => MyHomePage(),
+        '/characterRegister': (context) => CharacterRegister(),
       },
     );
   }

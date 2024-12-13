@@ -57,7 +57,9 @@ class _CharacterlistscreenState extends State<Characterlistscreen> {
               children: [
                 Center(
                   child: ButtonAddItemList(
-                    action: () {},
+                    action: () {
+                      Navigator.pushNamed(context, '/characterRegister');
+                    },
                     label: 'Adicionar personagem',
                   ),
                 ),
