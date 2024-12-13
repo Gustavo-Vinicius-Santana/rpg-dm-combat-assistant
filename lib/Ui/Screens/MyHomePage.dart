@@ -13,6 +13,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 1;
+  late List<Widget> _screens;
 
   @override
   void initState() {
@@ -24,22 +25,26 @@ class _MyHomePageState extends State<MyHomePage> {
     ];
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Recuperando o argumento da rota, se disponível
+    final arguments = ModalRoute.of(context)?.settings.arguments;
+    if (arguments is int) {
+      setState(() {
+        _selectedIndex = arguments;
+      });
+    }
+  }
+
   void _onItemSelected(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
 
-  late List<Widget> _screens;
-
   @override
   Widget build(BuildContext context) {
-    // Recuperando o argumento da rota, se disponível
-    final Object? arguments = ModalRoute.of(context)?.settings.arguments;
-    if (arguments is int) {
-      // Se o argumento for um inteiro, atualize o índice selecionado
-      _selectedIndex = arguments;
-    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
