@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Screens/CharacterEditScreen.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Screens/CharacterRegister.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Screens/MyHomePage.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Screens/CharacterListScreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,6 +23,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => MyHomePage(),
         '/characterRegister': (context) => CharacterRegister(),
+        '/characterEdit': (context) => CharacterEditScreen(),
       },
     );
   }
