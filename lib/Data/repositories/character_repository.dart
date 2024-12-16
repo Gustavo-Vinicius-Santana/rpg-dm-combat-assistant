@@ -11,6 +11,11 @@ class CharacterRepository {
     return db.query('characters');
   }
 
+  Future<List<Map<String, dynamic>>> getCharacterById(int id) async {
+    final db = await DB.instance.database;
+    return db.query('characters', where: 'id = ?', whereArgs: [id]);
+  }
+
   Future<int> updateCharacter(int id, Map<String, dynamic> character) async {
     final db = await DB.instance.database;
     return db.update(
