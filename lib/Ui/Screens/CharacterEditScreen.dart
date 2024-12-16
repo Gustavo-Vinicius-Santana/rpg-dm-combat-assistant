@@ -149,7 +149,12 @@ class _CharacterEditScreenState extends State<CharacterEditScreen> {
 
       try {
         await _characterRepository.updateCharacter(id, character);
-        Navigator.pop(context);
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/',
+          (route) => false,
+          arguments: 0,
+        );
       } catch (e) {
         print(e);
       }
@@ -216,7 +221,7 @@ class _CharacterEditScreenState extends State<CharacterEditScreen> {
                       register: () {
                         _registerCharacter(id!);
                       },
-                      textInButton: 'CADASTRAR',
+                      textInButton: 'EDITAR',
                     ),
                   )
                 ],
