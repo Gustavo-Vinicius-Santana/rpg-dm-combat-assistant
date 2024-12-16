@@ -68,6 +68,7 @@ class _MonsterlistscreenState extends State<Monsterlistscreen> {
                       selectIcon: 1,
                       emptyList: 'Não há monstros cadastrados',
                       itemsList: _monsters,
+                      openEdit: () {},
                     ),
                   ),
                 )

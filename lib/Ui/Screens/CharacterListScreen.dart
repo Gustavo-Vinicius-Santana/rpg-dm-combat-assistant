@@ -42,6 +42,14 @@ class _CharacterlistscreenState extends State<Characterlistscreen> {
     }
   }
 
+  Future<void> _openCharacterEdit(int id) async {
+    Navigator.pushNamed(
+      context,
+      '/characterEdit',
+      arguments: id,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,6 +79,7 @@ class _CharacterlistscreenState extends State<Characterlistscreen> {
                       selectIcon: 0,
                       emptyList: 'Não há jogadores cadastrado',
                       itemsList: _characters,
+                      openEdit: _openCharacterEdit,
                     ),
                   ),
                 )

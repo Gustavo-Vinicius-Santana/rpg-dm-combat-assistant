@@ -6,7 +6,10 @@ class ListSimple extends StatefulWidget {
       {super.key,
       required this.selectIcon,
       required this.emptyList,
-      required this.itemsList});
+      required this.itemsList,
+      required this.openEdit});
+  final Function openEdit;
+
   final int selectIcon;
   final String emptyList;
   final List<Map<String, dynamic>> itemsList;
@@ -51,7 +54,10 @@ class _ListSimpleState extends State<ListSimple> {
             itemCount: widget.itemsList.length,
             itemBuilder: (context, index) {
               return ListTile(
-                onTap: () => print(items[index]),
+                onTap: () {
+                  final int id = widget.itemsList[index]['id'];
+                  widget.openEdit(id);
+                },
                 title: Row(
                   children: [
                     iconList[widget.selectIcon],

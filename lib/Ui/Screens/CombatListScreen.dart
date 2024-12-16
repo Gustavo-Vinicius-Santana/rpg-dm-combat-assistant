@@ -69,6 +69,7 @@ class _CombatlistscreenState extends State<Combatlistscreen> {
                       selectIcon: 2,
                       emptyList: 'Não há combates cadastrados',
                       itemsList: _combats,
+                      openEdit: () {},
                     ),
                   ),
                 )
