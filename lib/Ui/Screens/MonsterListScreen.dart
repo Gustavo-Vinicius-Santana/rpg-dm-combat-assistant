@@ -14,6 +14,7 @@ class Monsterlistscreen extends StatefulWidget {
 class _MonsterlistscreenState extends State<Monsterlistscreen> {
   final MonstersRepository _monstersRepository = MonstersRepository();
   List<Map<String, dynamic>> _monsters = [];
+  final List<int> selectedItemsToDelete = [];
   bool _isLoading = true;
 
   @override
@@ -57,8 +58,10 @@ class _MonsterlistscreenState extends State<Monsterlistscreen> {
           : Column(
               children: [
                 ButtonAddItemList(
-                  action: () {},
+                  actionAdd: () {},
+                  actionDelete: () {},
                   label: 'Adicionar monstro',
+                  isDelete: false,
                 ),
                 Center(
                   child: Container(
@@ -68,7 +71,14 @@ class _MonsterlistscreenState extends State<Monsterlistscreen> {
                       selectIcon: 1,
                       emptyList: 'Não há monstros cadastrados',
                       itemsList: _monsters,
+                      selectedItemsToDelete: selectedItemsToDelete,
                       openEdit: () {},
+                      onSelectionChanged: (selectedItems) {
+                        setState(() {
+                          selectedItemsToDelete.clear();
+                          selectedItemsToDelete.addAll(selectedItems);
+                        });
+                      },
                     ),
                   ),
                 )
