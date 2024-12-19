@@ -13,6 +13,7 @@ class Combatlistscreen extends StatefulWidget {
 
 class _CombatlistscreenState extends State<Combatlistscreen> {
   final CombatsRepository _combatsRepository = CombatsRepository();
+  final List<int> selectedItemsToDelete = [];
   List<Map<String, dynamic>> _combats = [];
   bool isLoading = true;
 
@@ -58,8 +59,10 @@ class _CombatlistscreenState extends State<Combatlistscreen> {
           : Column(
               children: [
                 ButtonAddItemList(
-                  action: () {},
+                  actionAdd: () {},
+                  actionDelete: () {},
                   label: 'Adicionar combate',
+                  isDelete: false,
                 ),
                 Center(
                   child: Container(
@@ -69,6 +72,14 @@ class _CombatlistscreenState extends State<Combatlistscreen> {
                       selectIcon: 2,
                       emptyList: 'Não há combates cadastrados',
                       itemsList: _combats,
+                      selectedItemsToDelete: selectedItemsToDelete,
+                      openEdit: () {},
+                      onSelectionChanged: (selectedItems) {
+                        setState(() {
+                          selectedItemsToDelete.clear();
+                          selectedItemsToDelete.addAll(selectedItems);
+                        });
+                      },
                     ),
                   ),
                 )

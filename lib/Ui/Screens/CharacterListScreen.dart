@@ -13,6 +13,7 @@ class Characterlistscreen extends StatefulWidget {
 
 class _CharacterlistscreenState extends State<Characterlistscreen> {
   final CharacterRepository _repository = CharacterRepository();
+  final List<int> selectedItemsToDelete = [];
   List<Map<String, dynamic>> _characters = [];
   bool _isLoading = true;
 
@@ -42,6 +43,27 @@ class _CharacterlistscreenState extends State<Characterlistscreen> {
     }
   }
 
+  Future<void> _openCharacterEdit(int id) async {
+    Navigator.pushNamed(
+      context,
+      '/characterEdit',
+      arguments: id,
+    );
+  }
+
+  Future<void> _deleteCharacter(List<int> id) async {
+    try {
+      await _repository.deleteRowsByIds(id);
+      print(_characters);
+      setState(() {
+        selectedItemsToDelete.clear();
+      });
+      await _loadCharacters();
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,8 +79,16 @@ class _CharacterlistscreenState extends State<Characterlistscreen> {
               children: [
                 Center(
                   child: ButtonAddItemList(
-                    action: () {},
-                    label: 'Adicionar personagem',
+                    actionAdd: () {
+                      Navigator.pushNamed(context, '/characterRegister');
+                    },
+                    actionDelete: () {
+                      _deleteCharacter(selectedItemsToDelete);
+                    },
+                    isDelete: selectedItemsToDelete.isNotEmpty,
+                    label: selectedItemsToDelete.isNotEmpty
+                        ? 'Deletar personagem(s)'
+                        : 'Adicionar personagem',
                   ),
                 ),
                 Center(
@@ -69,6 +99,14 @@ class _CharacterlistscreenState extends State<Characterlistscreen> {
                       selectIcon: 0,
                       emptyList: 'Não há jogadores cadastrado',
                       itemsList: _characters,
+                      selectedItemsToDelete: selectedItemsToDelete,
+                      openEdit: _openCharacterEdit,
+                      onSelectionChanged: (selectedItems) {
+                        setState(() {
+                          selectedItemsToDelete.clear();
+                          selectedItemsToDelete.addAll(selectedItems);
+                        });
+                      },
                     ),
                   ),
                 )
