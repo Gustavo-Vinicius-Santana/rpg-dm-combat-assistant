@@ -165,7 +165,7 @@ class _MonsterEditScreenState extends State<MonsterEditScreen> {
           context,
           '/',
           (route) => false,
-          arguments: 2,
+          arguments: 0,
         );
         return false; // Impede o comportamento padrão de voltar
       },
