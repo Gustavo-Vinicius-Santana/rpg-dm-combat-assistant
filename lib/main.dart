@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:rpg_dm_combat_assistant/Ui/Screens/CharacterEditScreen.dart';
-import 'package:rpg_dm_combat_assistant/Ui/Screens/CharacterRegister.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Screens/Character/CharacterEditScreen.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Screens/Character/CharacterRegister.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Screens/Monster/MonsterEditScreen.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Screens/Monster/MonsterRegister.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Screens/MyHomePage.dart';
 
 void main() {
@@ -23,6 +25,8 @@ class MyApp extends StatelessWidget {
         '/': (context) => MyHomePage(),
         '/characterRegister': (context) => CharacterRegister(),
         '/characterEdit': (context) => CharacterEditScreen(),
+        '/monsterRegister': (context) => MonsterRegister(),
+        '/mosterEdit': (context) => MonsterEditScreen(),
       },
     );
   }

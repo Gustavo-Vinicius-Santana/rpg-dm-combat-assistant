@@ -43,6 +43,27 @@ class _MonsterlistscreenState extends State<Monsterlistscreen> {
     }
   }
 
+  Future<void> _openMonsterEdit(int id) async {
+    Navigator.pushNamed(
+      context,
+      '/mosterEdit',
+      arguments: id,
+    );
+  }
+
+  Future<void> _deleteCharacter(List<int> id) async {
+    try {
+      await _monstersRepository.deleteRowsByIds(id);
+      print(_monsters);
+      setState(() {
+        selectedItemsToDelete.clear();
+      });
+      await _loadMonsters();
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,10 +79,16 @@ class _MonsterlistscreenState extends State<Monsterlistscreen> {
           : Column(
               children: [
                 ButtonAddItemList(
-                  actionAdd: () {},
-                  actionDelete: () {},
-                  label: 'Adicionar monstro',
-                  isDelete: false,
+                  actionAdd: () {
+                    Navigator.pushNamed(context, '/monsterRegister');
+                  },
+                  actionDelete: () {
+                    _deleteCharacter(selectedItemsToDelete);
+                  },
+                  label: selectedItemsToDelete.isNotEmpty
+                      ? 'Deletar mostro(s)'
+                      : 'Adicionar mostro',
+                  isDelete: selectedItemsToDelete.isNotEmpty,
                 ),
                 Center(
                   child: Container(
@@ -72,7 +99,7 @@ class _MonsterlistscreenState extends State<Monsterlistscreen> {
                       emptyList: 'Não há monstros cadastrados',
                       itemsList: _monsters,
                       selectedItemsToDelete: selectedItemsToDelete,
-                      openEdit: () {},
+                      openEdit: _openMonsterEdit,
                       onSelectionChanged: (selectedItems) {
                         setState(() {
                           selectedItemsToDelete.clear();
