@@ -63,7 +63,7 @@ class _MonsterRegisterState extends State<MonsterRegister> {
     });
   }
 
-  void _registerCharacter() async {
+  void _registerMonster() async {
     final nameMonster = _nameMonsterController.text;
     final armor = _armorController.text;
     final maxHealth = _maxHealthController.text;
@@ -164,7 +164,7 @@ class _MonsterRegisterState extends State<MonsterRegister> {
             const SizedBox(height: 30),
             Center(
               child: ButtonFormConfirm(
-                register: _registerCharacter,
+                register: _registerMonster,
                 textInButton: 'CADASTRAR',
               ),
             )
