@@ -123,52 +123,63 @@ class _MonsterRegisterState extends State<MonsterRegister> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Cadastrar monstro'),
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            Center(
-              child: InputText(
-                controller: _nameMonsterController,
-                maxLength: 20,
-                errorMessage: _messageErrorNameMonster,
-                placeholder: 'Nome do monstro',
-                label: 'MONSTRO',
-              ),
-            ),
-            const SizedBox(height: 20),
-            InputNumberInt(
-              controller: _armorController,
-              errorMessage: _messageErrorArmor,
-              label: 'ARMADURA',
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                InputNumberInt(
-                  controller: _maxHealthController,
-                  errorMessage: _messageErrorMaxHealth,
-                  label: 'VIDA MAXIMA',
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/',
+          (route) => false,
+          arguments: 2,
+        );
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Cadastrar monstro'),
+        ),
+        body: Center(
+          child: Column(
+            children: [
+              Center(
+                child: InputText(
+                  controller: _nameMonsterController,
+                  maxLength: 20,
+                  errorMessage: _messageErrorNameMonster,
+                  placeholder: 'Nome do monstro',
+                  label: 'MONSTRO',
                 ),
-                InputNumberInt(
-                  controller: _minHealthController,
-                  errorMessage: _messageErrorMinHealth,
-                  label: 'VIDA MINIMA',
-                )
-              ],
-            ),
-            const SizedBox(height: 30),
-            Center(
-              child: ButtonFormConfirm(
-                register: _registerMonster,
-                textInButton: 'CADASTRAR',
               ),
-            )
-          ],
+              const SizedBox(height: 20),
+              InputNumberInt(
+                controller: _armorController,
+                errorMessage: _messageErrorArmor,
+                label: 'ARMADURA',
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  InputNumberInt(
+                    controller: _maxHealthController,
+                    errorMessage: _messageErrorMaxHealth,
+                    label: 'VIDA MAXIMA',
+                  ),
+                  InputNumberInt(
+                    controller: _minHealthController,
+                    errorMessage: _messageErrorMinHealth,
+                    label: 'VIDA MINIMA',
+                  )
+                ],
+              ),
+              const SizedBox(height: 30),
+              Center(
+                child: ButtonFormConfirm(
+                  register: _registerMonster,
+                  textInButton: 'CADASTRAR',
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
