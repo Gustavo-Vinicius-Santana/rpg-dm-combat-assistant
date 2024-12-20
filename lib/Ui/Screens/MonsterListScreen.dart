@@ -51,6 +51,19 @@ class _MonsterlistscreenState extends State<Monsterlistscreen> {
     );
   }
 
+  Future<void> _deleteCharacter(List<int> id) async {
+    try {
+      await _monstersRepository.deleteRowsByIds(id);
+      print(_monsters);
+      setState(() {
+        selectedItemsToDelete.clear();
+      });
+      await _loadMonsters();
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,9 +82,13 @@ class _MonsterlistscreenState extends State<Monsterlistscreen> {
                   actionAdd: () {
                     Navigator.pushNamed(context, '/monsterRegister');
                   },
-                  actionDelete: () {},
-                  label: 'Adicionar monstro',
-                  isDelete: false,
+                  actionDelete: () {
+                    _deleteCharacter(selectedItemsToDelete);
+                  },
+                  label: selectedItemsToDelete.isNotEmpty
+                      ? 'Deletar mostro(s)'
+                      : 'Adicionar mostro',
+                  isDelete: selectedItemsToDelete.isNotEmpty,
                 ),
                 Center(
                   child: Container(
