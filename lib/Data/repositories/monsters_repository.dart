@@ -11,6 +11,11 @@ class MonstersRepository {
     return db.query('monsters');
   }
 
+  Future<List<Map<String, dynamic>>> getMonsterById(int id) async {
+    final db = await DB.instance.database;
+    return db.query('monsters', where: 'id = ?', whereArgs: [id]);
+  }
+
   Future<int> updateMonster(int id, Map<String, dynamic> monster) async {
     final db = await DB.instance.database;
     return db.update(

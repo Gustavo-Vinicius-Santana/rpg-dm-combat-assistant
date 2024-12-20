@@ -43,6 +43,14 @@ class _MonsterlistscreenState extends State<Monsterlistscreen> {
     }
   }
 
+  Future<void> _openMonsterEdit(int id) async {
+    Navigator.pushNamed(
+      context,
+      '/mosterEdit',
+      arguments: id,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,7 +82,7 @@ class _MonsterlistscreenState extends State<Monsterlistscreen> {
                       emptyList: 'Não há monstros cadastrados',
                       itemsList: _monsters,
                       selectedItemsToDelete: selectedItemsToDelete,
-                      openEdit: () {},
+                      openEdit: _openMonsterEdit,
                       onSelectionChanged: (selectedItems) {
                         setState(() {
                           selectedItemsToDelete.clear();
