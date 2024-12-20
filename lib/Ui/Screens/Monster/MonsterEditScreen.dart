@@ -126,7 +126,6 @@ class _MonsterEditScreenState extends State<MonsterEditScreen> {
         'armor': armor,
         'lifeMax': int.parse(maxHealth),
         'lifeActual': int.parse(minHealth),
-        'condition': 'alive',
       };
 
       try {

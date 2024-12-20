@@ -103,10 +103,6 @@ class _CharacterRegisterState extends State<CharacterRegister> {
         'armor': armor,
         'lifeMax': int.parse(maxHealth),
         'lifeActual': int.parse(minHealth),
-        'condition_1': 'alive',
-        'condition_2': 'alive',
-        'condition_3': 'alive',
-        'condition_4': 'alive',
       };
 
       try {
