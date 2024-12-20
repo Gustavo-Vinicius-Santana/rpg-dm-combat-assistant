@@ -161,7 +161,7 @@ class _MonsterEditScreenState extends State<MonsterEditScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cadastrar monstro'),
+        title: const Text('Editar monstro'),
       ),
       body: _isLoading
           ? const Center(
