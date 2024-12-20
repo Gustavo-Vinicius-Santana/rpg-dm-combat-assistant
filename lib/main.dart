@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:rpg_dm_combat_assistant/Ui/Screens/CharacterEditScreen.dart';
-import 'package:rpg_dm_combat_assistant/Ui/Screens/CharacterRegister.dart';
-import 'package:rpg_dm_combat_assistant/Ui/Screens/MonsterEditScreen.dart';
-import 'package:rpg_dm_combat_assistant/Ui/Screens/MonsterRegister.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Screens/Character/CharacterEditScreen.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Screens/Character/CharacterRegister.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Screens/Monster/MonsterEditScreen.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Screens/Monster/MonsterRegister.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Screens/MyHomePage.dart';
 
 void main() {
