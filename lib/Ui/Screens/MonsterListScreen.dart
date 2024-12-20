@@ -58,7 +58,9 @@ class _MonsterlistscreenState extends State<Monsterlistscreen> {
           : Column(
               children: [
                 ButtonAddItemList(
-                  actionAdd: () {},
+                  actionAdd: () {
+                    Navigator.pushNamed(context, '/monsterRegister');
+                  },
                   actionDelete: () {},
                   label: 'Adicionar monstro',
                   isDelete: false,
