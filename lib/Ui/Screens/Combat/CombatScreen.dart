@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:rpg_dm_combat_assistant/Data/repositories/character_in_combat_repository.dart';
 import 'package:rpg_dm_combat_assistant/Data/repositories/combats_repository.dart';
+import 'package:rpg_dm_combat_assistant/Data/repositories/monster_in_combat_repository.dart';
 
 class CombatScreen extends StatefulWidget {
   const CombatScreen({super.key});
@@ -10,6 +12,19 @@ class CombatScreen extends StatefulWidget {
 
 class _CombatScreenState extends State<CombatScreen> {
   final CombatsRepository _combatsRepository = CombatsRepository();
+
+  final CharacterInCombatRepository _characterInCombatRepository =
+      CharacterInCombatRepository();
+  final MonsterInCombatRepository _monsterInCombatRepository =
+      MonsterInCombatRepository();
+
+  final List idsCharacter = [];
+  final List idsMonster = [];
+
+  late List<Map<String, dynamic>> _monstersInCombat = [];
+  late List<Map<String, dynamic>> _charactersInCombat = [];
+  late List<Map<String, dynamic>> _personsInCombat = [];
+
   late final String _title;
   late final String _time;
   late final int _turns;
@@ -36,6 +51,36 @@ class _CombatScreenState extends State<CombatScreen> {
       _time = combat[0]['time'];
       _turns = combat[0]['turns'];
     });
+
+    await _loadMonsters(id);
+    await _loadCharacters(id);
+
+    _organizedList();
+  }
+
+  Future<void> _loadMonsters(int id) async {
+    final monstersInCombat =
+        await _monsterInCombatRepository.getMonstersInCombat(id);
+
+    setState(() {
+      _monstersInCombat = monstersInCombat;
+    });
+  }
+
+  Future<void> _loadCharacters(int id) async {
+    final charactersInCombat =
+        await _characterInCombatRepository.getCharacterInCombatByCombatId(id);
+
+    setState(() {
+      _charactersInCombat = charactersInCombat;
+    });
+  }
+
+  void _organizedList() {
+    _personsInCombat = [];
+    _personsInCombat.addAll(_charactersInCombat);
+    _personsInCombat.addAll(_monstersInCombat);
+    print("Personagens presentes no combate: $_personsInCombat");
   }
 
   @override
@@ -52,7 +97,17 @@ class _CombatScreenState extends State<CombatScreen> {
               Text('Turnos: $_turns'),
               Text('Tempo: $_time'),
             ],
-          )
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _personsInCombat.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(_personsInCombat[index]['name'] as String),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
