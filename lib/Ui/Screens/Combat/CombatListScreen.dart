@@ -44,6 +44,14 @@ class _CombatlistscreenState extends State<Combatlistscreen> {
     }
   }
 
+  Future<void> _openCombat(int id) async {
+    Navigator.pushNamed(
+      context,
+      '/combatScreen',
+      arguments: id,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,7 +81,7 @@ class _CombatlistscreenState extends State<Combatlistscreen> {
                       emptyList: 'Não há combates cadastrados',
                       itemsList: _combats,
                       selectedItemsToDelete: selectedItemsToDelete,
-                      openEdit: () {},
+                      openEdit: _openCombat,
                       onSelectionChanged: (selectedItems) {
                         setState(() {
                           selectedItemsToDelete.clear();
