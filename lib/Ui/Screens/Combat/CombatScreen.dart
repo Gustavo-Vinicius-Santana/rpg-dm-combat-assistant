@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:rpg_dm_combat_assistant/Data/repositories/character_in_combat_repository.dart';
 import 'package:rpg_dm_combat_assistant/Data/repositories/combats_repository.dart';
 import 'package:rpg_dm_combat_assistant/Data/repositories/monster_in_combat_repository.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Components/Buttons/ButtonCombat.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Components/TextBox/TimeAndTurnsBox.dart';
 
 class CombatScreen extends StatefulWidget {
   const CombatScreen({super.key});
@@ -88,15 +90,68 @@ class _CombatScreenState extends State<CombatScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_title),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () {
+              print("Editar clicado!");
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Text('Turnos: $_turns'),
-              Text('Tempo: $_time'),
+              SizedBox(
+                width: 190,
+                child: ButtonCombat(
+                  label: 'Adicionar monstro',
+                  onPress: () {},
+                  iconSelect: 1,
+                ),
+              ),
+              SizedBox(
+                width: 190,
+                child: ButtonCombat(
+                  label: 'Adicionar jogador',
+                  onPress: () {},
+                  iconSelect: 0,
+                ),
+              ),
             ],
+          ),
+          const Divider(),
+          SizedBox(
+            width: 250,
+            child: ButtonCombat(
+              label: 'Proximo turno',
+              onPress: () {},
+              iconSelect: 2,
+            ),
+          ),
+          const SizedBox(height: 15),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              TimesAndTurnsBox(
+                text: 'Rodadas: $_turns',
+              ),
+              TimesAndTurnsBox(
+                text: 'tempo: $_time',
+              ),
+            ],
+          ),
+          const Divider(),
+          const Center(
+            child: Text(
+              'COMBATENTES',
+              style: TextStyle(
+                fontSize: 20.0,
+                color: Colors.black,
+              ),
+            ),
           ),
           Expanded(
             child: ListView.builder(
