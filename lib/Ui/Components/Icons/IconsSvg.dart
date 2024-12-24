@@ -41,12 +41,13 @@ class AppIcons {
   static Widget combateEspadasIcon({
     double sizeheight = 30.0,
     double sizeWidth = 10.0,
+    Color? color,
   }) {
     return SvgPicture.asset(
       'assets/combate_espadas_icone.svg',
       width: sizeWidth,
       height: sizeheight,
-      color: Colors.grey,
+      color: color ?? Colors.grey,
     );
   }
 
@@ -65,48 +66,52 @@ class AppIcons {
   static Widget monstrosCabecaIcon({
     double sizeheight = 30.0,
     double sizeWidth = 10.0,
+    Color? color,
   }) {
     return SvgPicture.asset(
       'assets/monstros_cabeca_icone.svg',
       width: sizeWidth,
       height: sizeheight,
-      color: Colors.grey,
+      color: color ?? Colors.grey,
     );
   }
 
   static Widget monstrosBigCabecaIcon({
     double sizeheight = 100.0,
     double sizeWidth = 100.0,
+    Color? color,
   }) {
     return SvgPicture.asset(
       'assets/monstros_cabeca_icone.svg',
       width: sizeWidth,
       height: sizeheight,
-      color: Colors.grey,
+      color: color ?? Colors.grey,
     );
   }
 
   static Widget jogadorCabecaIcon({
     double sizeheight = 30.0,
     double sizeWidth = 10.0,
+    Color? color,
   }) {
     return SvgPicture.asset(
       'assets/jogador_cabeca_icone.svg',
       width: sizeWidth,
       height: sizeheight,
-      color: Colors.grey,
+      color: color ?? Colors.grey,
     );
   }
 
   static Widget jogadorBigCabecaIcon({
     double sizeheight = 100.0,
     double sizeWidth = 100.0,
+    Color? color,
   }) {
     return SvgPicture.asset(
       'assets/jogador_cabeca_icone.svg',
       width: sizeWidth,
       height: sizeheight,
-      color: Colors.grey,
+      color: color ?? Colors.grey,
     );
   }
 }
