@@ -4,6 +4,7 @@ import 'package:rpg_dm_combat_assistant/Data/repositories/combats_repository.dar
 import 'package:rpg_dm_combat_assistant/Data/repositories/monster_in_combat_repository.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Buttons/ButtonCombat.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/TextBox/TimeAndTurnsBox.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Components/Lists/ListCombat.dart';
 
 class CombatScreen extends StatefulWidget {
   const CombatScreen({super.key});
@@ -153,15 +154,8 @@ class _CombatScreenState extends State<CombatScreen> {
               ),
             ),
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _personsInCombat.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(_personsInCombat[index]['name'] as String),
-                );
-              },
-            ),
+          ListCombat(
+            personsInCombat: _personsInCombat,
           ),
         ],
       ),
