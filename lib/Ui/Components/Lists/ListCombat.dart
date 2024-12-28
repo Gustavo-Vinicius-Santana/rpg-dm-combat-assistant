@@ -20,6 +20,16 @@ class _ListCombatState extends State<ListCombat> {
               .sort((a, b) => b['iniciative'].compareTo(a['iniciative']));
 
           final person = widget.personsInCombat[index];
+
+          final List conditions = [
+            person['condition_1'],
+            person['condition_2'],
+            person['condition_3'],
+            person['condition_4']
+          ].where((condition) => condition != null).toList();
+
+          print('CONDIÇÕES DO PERSONAGEM ${person['name']}: $conditions');
+
           return CardPersonInCombat(
             name: person['name'],
             player: 'teste',
@@ -28,6 +38,7 @@ class _ListCombatState extends State<ListCombat> {
             lifeActual: person['lifeActual'],
             type: person['type'],
             iniciative: person['iniciative'],
+            conditions: conditions,
           );
         },
       ),

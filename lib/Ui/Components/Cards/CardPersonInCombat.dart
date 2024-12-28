@@ -10,7 +10,8 @@ class CardPersonInCombat extends StatefulWidget {
       required this.lifeMax,
       required this.lifeActual,
       required this.type,
-      required this.iniciative});
+      required this.iniciative,
+      required this.conditions});
   final String name;
   final String player;
   final String type;
@@ -18,6 +19,7 @@ class CardPersonInCombat extends StatefulWidget {
   final String armor;
   final int lifeMax;
   final int lifeActual;
+  final List conditions;
 
   @override
   State<CardPersonInCombat> createState() => _CardPersonInCombatState();
@@ -116,6 +118,45 @@ class _CardPersonInCombatState extends State<CardPersonInCombat> {
               ),
             ],
           ),
+          const Divider(),
+          Column(
+            children: [
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'CONDIÇÕES',
+                    style: TextStyle(fontSize: 15.0, color: Colors.grey),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (widget.conditions.isNotEmpty) ...[
+                    for (var condition in widget.conditions)
+                      Container(
+                        margin: const EdgeInsets.only(right: 8),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          condition,
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                      ),
+                  ] else
+                    const Text(
+                      "Não há condições",
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
+                ],
+              ),
+            ],
+          )
         ]),
       ),
     );
