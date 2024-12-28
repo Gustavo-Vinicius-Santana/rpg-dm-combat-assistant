@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Icons/IconsSvg.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Components/Modals/ModalEditPerson.dart';
 
 class CardPersonInCombat extends StatefulWidget {
   const CardPersonInCombat(
@@ -26,6 +27,22 @@ class CardPersonInCombat extends StatefulWidget {
 }
 
 class _CardPersonInCombatState extends State<CardPersonInCombat> {
+  void openModal() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ModalEditPerson(
+          personName: widget.name,
+          personIniciative: widget.iniciative,
+          personLifeMax: widget.lifeMax,
+          personLifeActual: widget.lifeActual,
+          personArmor: widget.armor,
+          personConditions: widget.conditions,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -52,7 +69,7 @@ class _CardPersonInCombatState extends State<CardPersonInCombat> {
               IconButton(
                 icon: const Icon(Icons.edit, color: Colors.grey),
                 onPressed: () {
-                  print('Editar clicado! ${widget.name}');
+                  openModal();
                 },
               ),
             ],
