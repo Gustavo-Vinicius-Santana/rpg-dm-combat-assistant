@@ -18,11 +18,14 @@ class _ListCombatState extends State<ListCombat> {
         itemBuilder: (context, index) {
           final person = widget.personsInCombat[index];
           return CardPersonInCombat(
-              name: person['name'],
-              player: 'teste',
-              armor: person['armor'],
-              lifeMax: person['lifeMax'],
-              lifeActual: person['lifeActual']);
+            name: person['name'],
+            player: 'teste',
+            armor: person['armor'],
+            lifeMax: person['lifeMax'],
+            lifeActual: person['lifeActual'],
+            type: person['type'],
+            iniciative: person['iniciative'],
+          );
         },
       ),
     );

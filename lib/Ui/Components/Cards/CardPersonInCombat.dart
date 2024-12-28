@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Components/Icons/IconsSvg.dart';
 
 class CardPersonInCombat extends StatefulWidget {
   const CardPersonInCombat(
@@ -7,9 +8,13 @@ class CardPersonInCombat extends StatefulWidget {
       required this.player,
       required this.armor,
       required this.lifeMax,
-      required this.lifeActual});
+      required this.lifeActual,
+      required this.type,
+      required this.iniciative});
   final String name;
   final String player;
+  final String type;
+  final int iniciative;
   final String armor;
   final int lifeMax;
   final int lifeActual;
@@ -29,7 +34,10 @@ class _CardPersonInCombatState extends State<CardPersonInCombat> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(
             children: [
-              const Icon(Icons.person, color: Colors.blue),
+              if (widget.type == 'character')
+                AppIcons.jogadorCabecaIcon()
+              else if (widget.type == 'monster')
+                AppIcons.monstrosCabecaIcon(),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
@@ -55,11 +63,11 @@ class _CardPersonInCombatState extends State<CardPersonInCombat> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    "JOGADOR:",
+                    "INICIATIVA",
                     style: TextStyle(fontSize: 12.0, color: Colors.grey),
                   ),
                   Text(
-                    widget.player,
+                    '${widget.iniciative}',
                     style: const TextStyle(
                       fontSize: 16.0,
                     ),
@@ -75,7 +83,7 @@ class _CardPersonInCombatState extends State<CardPersonInCombat> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    "ARMADURA:",
+                    "ARMADURA",
                     style: TextStyle(fontSize: 12.0, color: Colors.grey),
                   ),
                   Text(
@@ -95,7 +103,7 @@ class _CardPersonInCombatState extends State<CardPersonInCombat> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    "PV:",
+                    "PV",
                     style: TextStyle(fontSize: 12.0, color: Colors.grey),
                   ),
                   Text(
