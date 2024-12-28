@@ -16,6 +16,9 @@ class _ListCombatState extends State<ListCombat> {
       child: ListView.builder(
         itemCount: widget.personsInCombat.length,
         itemBuilder: (context, index) {
+          widget.personsInCombat
+              .sort((a, b) => b['iniciative'].compareTo(a['iniciative']));
+
           final person = widget.personsInCombat[index];
           return CardPersonInCombat(
             name: person['name'],
