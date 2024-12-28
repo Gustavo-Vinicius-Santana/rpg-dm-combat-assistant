@@ -134,7 +134,9 @@ class DB {
       'combat_id': 1,
       'monster_id': 1, // Refere-se ao ID do Goblin
       'name': 'Goblin',
-      'armor': 'None',
+      'type': 'monster',
+      'iniciative': 7,
+      'armor': '16',
       'lifeMax': 30,
       'lifeActual': 30,
     });
@@ -143,7 +145,9 @@ class DB {
       'combat_id': 2,
       'monster_id': 2, // Refere-se ao ID do Orc
       'name': 'Orc',
-      'armor': 'Leather',
+      'type': 'monster',
+      'iniciative': 20,
+      'armor': '17',
       'lifeMax': 60,
       'lifeActual': 60,
     });
@@ -152,20 +156,24 @@ class DB {
     // Inserir personagens participantes no combate
     await db.insert('characters_participants', {
       'combat_id': 1,
-      'character_id': 1, // Refere-se ao ID do Warrior
+      'character_id': 1,
       'player': 'Player 1',
       'name': 'Warrior',
-      'armor': 'Plate Armor',
+      'type': 'character',
+      'iniciative': 10,
+      'armor': '18',
       'lifeMax': 100,
       'lifeActual': 100,
     });
 
     await db.insert('characters_participants', {
       'combat_id': 2,
-      'character_id': 2, // Refere-se ao ID do Mage
+      'character_id': 2,
       'player': 'Player 2',
       'name': 'Mage',
-      'armor': 'Robe',
+      'type': 'character',
+      'iniciative': 16,
+      'armor': '17',
       'lifeMax': 70,
       'lifeActual': 70,
     });
@@ -225,6 +233,8 @@ class DB {
       combat_id INTEGER NOT NULL,
       monster_id INTEGER NOT NULL,
       name TEXT NOT NULL,
+      type TEXT NOT NULL,
+      iniciative interger,
       armor TEXT NOT NULL,
       lifeMax INTEGER NOT NULL,
       lifeActual INTEGER NOT NULL,
@@ -244,6 +254,8 @@ class DB {
       character_id INTEGER NOT NULL,
       player TEXT NOT NULL,
       name TEXT NOT NULL,
+      type TEXT NOT NULL,
+      iniciative interger,
       armor TEXT NOT NULL,
       lifeMax INTEGER NOT NULL,
       lifeActual INTEGER NOT NULL,
