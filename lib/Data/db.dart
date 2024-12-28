@@ -139,6 +139,8 @@ class DB {
       'armor': '16',
       'lifeMax': 30,
       'lifeActual': 30,
+      'condition_1': 'fallen',
+      'condition_2': 'poisoned',
     });
 
     await db.insert('monsters_participants', {
@@ -150,6 +152,10 @@ class DB {
       'armor': '17',
       'lifeMax': 60,
       'lifeActual': 60,
+      'condition_1': 'bleeding',
+      'condition_2': 'poisoned',
+      'condition_3': 'raged',
+      'condition_4': 'confused',
     });
     // --------------------------------------------------------
 
