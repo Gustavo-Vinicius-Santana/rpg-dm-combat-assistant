@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Components/Buttons/ButtonAction.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Components/Buttons/ButtonFormConfirm.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Input/InputNumberInt.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Input/InputText.dart';
 
@@ -116,7 +118,16 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const Divider(),
-            const SizedBox(height: 16),
+            const SizedBox(height: 8),
+            const Center(
+              child: Text(
+                'ATRIBUTOS',
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey),
+              ),
+            ),
             InputText(
               controller: _namePersonController,
               label: 'NOME',
@@ -145,19 +156,89 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InputNumberInt(
-                  controller: _minHealthController,
-                  label: 'Vida Atual',
-                  errorMessage: _messageErrorMinHealth,
-                ),
-                InputNumberInt(
                   controller: _maxHealthController,
                   label: 'Vida Máxima',
                   errorMessage: _messageErrorMaxHealth,
                 ),
+                InputNumberInt(
+                  controller: _minHealthController,
+                  label: 'Vida Atual',
+                  errorMessage: _messageErrorMinHealth,
+                ),
               ],
             ),
             const SizedBox(height: 16),
-            Text('Condições: ${widget.personConditions.join(', ')}'),
+            const Divider(),
+            const SizedBox(height: 16),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Center(
+                  child: Text(
+                    'CONDIÇÕES',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (widget.personConditions.isNotEmpty) ...[
+                      for (var condition in widget.personConditions)
+                        Container(
+                          margin: const EdgeInsets.only(right: 8),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            condition,
+                            style: const TextStyle(fontSize: 12),
+                          ),
+                        ),
+                    ] else
+                      const Text(
+                        "Não há condições",
+                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                      ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (widget.personConditions.length >= 4)
+                      ButtonAction(
+                        onPressed: () {
+                          print('remover condição');
+                        },
+                        textInButton: 'remover condição',
+                      ),
+                    if (widget.personConditions.length < 4) ...[
+                      ButtonAction(
+                        onPressed: () {
+                          print('adicionar condição');
+                        },
+                        textInButton: 'adicionar condição',
+                      ),
+                      if (widget.personConditions.isNotEmpty)
+                        ButtonAction(
+                          onPressed: () {
+                            print('remover condição');
+                          },
+                          textInButton: 'remover condição',
+                        ),
+                    ],
+                  ],
+                )
+              ],
+            ),
+            const SizedBox(height: 16),
+            const Divider(),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
