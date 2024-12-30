@@ -88,76 +88,87 @@ class _CombatScreenState extends State<CombatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_title),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: () {
-              print("Editar clicado!");
-            },
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              SizedBox(
-                width: 190,
-                child: ButtonCombat(
-                  label: 'Adicionar monstro',
-                  onPress: () {},
-                  iconSelect: 1,
-                ),
-              ),
-              SizedBox(
-                width: 190,
-                child: ButtonCombat(
-                  label: 'Adicionar jogador',
-                  onPress: () {},
-                  iconSelect: 0,
-                ),
-              ),
-            ],
-          ),
-          const Divider(),
-          SizedBox(
-            width: 250,
-            child: ButtonCombat(
-              label: 'Proximo turno',
-              onPress: () {},
-              iconSelect: 2,
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/',
+          (route) => false,
+          arguments: 1,
+        );
+        return false; // Impede o comportamento padrão de voltar
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(_title),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () {
+                print("Editar clicado!");
+              },
             ),
-          ),
-          const SizedBox(height: 15),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              TimesAndTurnsBox(
-                text: 'Rodadas: $_turns',
-              ),
-              TimesAndTurnsBox(
-                text: 'tempo: $_time',
-              ),
-            ],
-          ),
-          const Divider(),
-          const Center(
-            child: Text(
-              'COMBATENTES',
-              style: TextStyle(
-                fontSize: 20.0,
-                color: Colors.black,
+          ],
+        ),
+        body: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                SizedBox(
+                  width: 190,
+                  child: ButtonCombat(
+                    label: 'Adicionar monstro',
+                    onPress: () {},
+                    iconSelect: 1,
+                  ),
+                ),
+                SizedBox(
+                  width: 190,
+                  child: ButtonCombat(
+                    label: 'Adicionar jogador',
+                    onPress: () {},
+                    iconSelect: 0,
+                  ),
+                ),
+              ],
+            ),
+            const Divider(),
+            SizedBox(
+              width: 250,
+              child: ButtonCombat(
+                label: 'Proximo turno',
+                onPress: () {},
+                iconSelect: 2,
               ),
             ),
-          ),
-          ListCombat(
-            personsInCombat: _personsInCombat,
-          ),
-        ],
+            const SizedBox(height: 15),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                TimesAndTurnsBox(
+                  text: 'Rodadas: $_turns',
+                ),
+                TimesAndTurnsBox(
+                  text: 'tempo: $_time',
+                ),
+              ],
+            ),
+            const Divider(),
+            const Center(
+              child: Text(
+                'COMBATENTES',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            ListCombat(
+              personsInCombat: _personsInCombat,
+            ),
+          ],
+        ),
       ),
     );
   }

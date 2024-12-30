@@ -159,70 +159,81 @@ class _CharacterEditScreenState extends State<CharacterEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Editar personagem'),
-      ),
-      body: _isLoading
-          ? const Center(
-              child: Loading(),
-            )
-          : Center(
-              child: Column(
-                children: [
-                  Center(
-                    child: InputText(
-                      controller: _namePlayerController,
-                      maxLength: 20,
-                      errorMessage: _messageErrorNamePlayer,
-                      placeholder: 'Nome do jogador',
-                      label: 'JOGADOR',
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Center(
-                    child: InputText(
-                      controller: _nameCharacterController,
-                      maxLength: 20,
-                      errorMessage: _messageErrorNameCharacter,
-                      placeholder: 'Nome do personagem',
-                      label: 'PERSONAGEM',
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  InputNumberInt(
-                    controller: _armorController,
-                    errorMessage: _messageErrorArmor,
-                    label: 'ARMADURA',
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      InputNumberInt(
-                        controller: _maxHealthController,
-                        errorMessage: _messageErrorMaxHealth,
-                        label: 'VIDA MAXIMA',
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/',
+          (route) => false,
+          arguments: 0,
+        );
+        return false; // Impede o comportamento padrão de voltar
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Editar personagem'),
+        ),
+        body: _isLoading
+            ? const Center(
+                child: Loading(),
+              )
+            : Center(
+                child: Column(
+                  children: [
+                    Center(
+                      child: InputText(
+                        controller: _namePlayerController,
+                        maxLength: 20,
+                        errorMessage: _messageErrorNamePlayer,
+                        placeholder: 'Nome do jogador',
+                        label: 'JOGADOR',
                       ),
-                      InputNumberInt(
-                        controller: _minHealthController,
-                        errorMessage: _messageErrorMinHealth,
-                        label: 'VIDA MINIMA',
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 30),
-                  Center(
-                    child: ButtonFormConfirm(
-                      register: () {
-                        _registerCharacter(id!);
-                      },
-                      textInButton: 'EDITAR',
                     ),
-                  )
-                ],
+                    const SizedBox(height: 20),
+                    Center(
+                      child: InputText(
+                        controller: _nameCharacterController,
+                        maxLength: 20,
+                        errorMessage: _messageErrorNameCharacter,
+                        placeholder: 'Nome do personagem',
+                        label: 'PERSONAGEM',
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    InputNumberInt(
+                      controller: _armorController,
+                      errorMessage: _messageErrorArmor,
+                      label: 'ARMADURA',
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        InputNumberInt(
+                          controller: _maxHealthController,
+                          errorMessage: _messageErrorMaxHealth,
+                          label: 'VIDA MAXIMA',
+                        ),
+                        InputNumberInt(
+                          controller: _minHealthController,
+                          errorMessage: _messageErrorMinHealth,
+                          label: 'VIDA MINIMA',
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                    Center(
+                      child: ButtonFormConfirm(
+                        register: () {
+                          _registerCharacter(id!);
+                        },
+                        textInButton: 'EDITAR',
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
+      ),
     );
   }
 }
