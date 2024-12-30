@@ -12,7 +12,11 @@ class CardPersonInCombat extends StatefulWidget {
       required this.lifeActual,
       required this.type,
       required this.iniciative,
-      required this.conditions});
+      required this.conditions,
+      required this.id,
+      required this.combatId});
+  final int id;
+  final int combatId;
   final String name;
   final String player;
   final String type;
@@ -32,6 +36,9 @@ class _CardPersonInCombatState extends State<CardPersonInCombat> {
       context: context,
       builder: (BuildContext context) {
         return ModalEditPerson(
+          personId: widget.id,
+          combatId: widget.combatId,
+          personType: widget.type,
           personName: widget.name,
           personIniciative: widget.iniciative,
           personLifeMax: widget.lifeMax,

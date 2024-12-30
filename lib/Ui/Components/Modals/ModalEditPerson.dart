@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:rpg_dm_combat_assistant/Data/repositories/character_in_combat_repository.dart';
+import 'package:rpg_dm_combat_assistant/Data/repositories/monster_in_combat_repository.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Buttons/ButtonAction.dart';
-import 'package:rpg_dm_combat_assistant/Ui/Components/Buttons/ButtonFormConfirm.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Input/InputNumberInt.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Input/InputText.dart';
 
@@ -13,8 +14,13 @@ class ModalEditPerson extends StatefulWidget {
     required this.personLifeActual,
     required this.personArmor,
     required this.personConditions,
+    required this.personId,
+    required this.personType,
+    required this.combatId,
   });
-
+  final int personId;
+  final int combatId;
+  final String personType;
   final String personName;
   final int personIniciative;
   final int personLifeMax;
@@ -27,6 +33,12 @@ class ModalEditPerson extends StatefulWidget {
 }
 
 class _ModalEditPersonState extends State<ModalEditPerson> {
+  final MonsterInCombatRepository monster_repository =
+      MonsterInCombatRepository();
+
+  final CharacterInCombatRepository character_repository =
+      CharacterInCombatRepository();
+
   final _namePersonController = TextEditingController();
   final _iniciativeController = TextEditingController();
   final _armorController = TextEditingController();
@@ -98,6 +110,62 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
         _messageErrorIniciative = null;
       }
     });
+  }
+
+  void _updatePerson() async {
+    final type = widget.personType;
+    final name = _namePersonController.text;
+    final iniciative = _iniciativeController.text;
+    final armor = _armorController.text;
+    final maxHealth = _maxHealthController.text;
+    final minHealth = _minHealthController.text;
+
+    if (name.isEmpty ||
+        iniciative.isEmpty ||
+        armor.isEmpty ||
+        maxHealth.isEmpty ||
+        minHealth.isEmpty) {
+      setState(() {
+        _messageErrorNamePerson = name.isEmpty ? 'Campo obrigatório.' : null;
+        _messageErrorIniciative =
+            iniciative.isEmpty ? 'Campo obrigatório.' : null;
+        _messageErrorArmor = armor.isEmpty ? 'Campo obrigatório.' : null;
+        _messageErrorMaxHealth =
+            maxHealth.isEmpty ? 'Campo obrigatório.' : null;
+        _messageErrorMinHealth =
+            minHealth.isEmpty ? 'Campo obrigatório.' : null;
+      });
+    } else {
+      Map<String, dynamic> personEdited = {
+        'name': name,
+        'iniciative': int.parse(iniciative),
+        'armor': armor,
+        'lifeMax': int.parse(maxHealth),
+        'lifeActual': int.parse(minHealth),
+      };
+
+      try {
+        if (type == 'character') {
+          await character_repository.updateCharacterInCombat(
+              widget.personId, personEdited);
+          print("Personagem editado com sucesso! ID: ${widget.personId}");
+        }
+
+        if (type == 'monster') {
+          await monster_repository.updateMonsterInCombat(
+              widget.personId, personEdited);
+          print("Personagem editado com sucesso! ID: ${widget.personId}");
+        }
+
+        Navigator.pushReplacementNamed(
+          context,
+          '/combatScreen',
+          arguments: widget.combatId,
+        );
+      } catch (e) {
+        print(e);
+      }
+    }
   }
 
   @override
@@ -250,7 +318,9 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    _updatePerson();
+
+                    // Navigator.of(context).pop();
                   },
                   child: const Text('Confirmar'),
                 ),

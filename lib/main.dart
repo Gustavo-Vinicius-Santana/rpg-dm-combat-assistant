@@ -24,10 +24,15 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         '/': (context) => MyHomePage(),
+        // ROTAS PERSONAGEM
         '/characterRegister': (context) => CharacterRegister(),
         '/characterEdit': (context) => CharacterEditScreen(),
+
+        // ROTAS MONSTRO
         '/monsterRegister': (context) => MonsterRegister(),
         '/mosterEdit': (context) => MonsterEditScreen(),
+
+        //ROTAS COMBATE
         '/combatScreen': (context) => CombatScreen(),
       },
     );

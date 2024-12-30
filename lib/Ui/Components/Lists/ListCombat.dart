@@ -31,6 +31,8 @@ class _ListCombatState extends State<ListCombat> {
           print('CONDIÇÕES DO PERSONAGEM ${person['name']}: $conditions');
 
           return CardPersonInCombat(
+            id: person['id'],
+            combatId: person['combat_id'],
             name: person['name'],
             player: 'teste',
             armor: person['armor'],
