@@ -3,6 +3,7 @@ import 'package:rpg_dm_combat_assistant/Data/repositories/character_in_combat_re
 import 'package:rpg_dm_combat_assistant/Data/repositories/combats_repository.dart';
 import 'package:rpg_dm_combat_assistant/Data/repositories/monster_in_combat_repository.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Buttons/ButtonCombat.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Components/Modals/ModalAddCharacterInCombat.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/TextBox/TimeAndTurnsBox.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Lists/ListCombat.dart';
 
@@ -28,9 +29,9 @@ class _CombatScreenState extends State<CombatScreen> {
   late List<Map<String, dynamic>> _charactersInCombat = [];
   late List<Map<String, dynamic>> _personsInCombat = [];
 
-  late final String _title;
-  late final String _time;
-  late final int _turns;
+  String _title = '';
+  String _time = '';
+  int _turns = 0;
 
   int? id;
   @override
@@ -86,6 +87,14 @@ class _CombatScreenState extends State<CombatScreen> {
     print("Personagens presentes no combate: $_personsInCombat");
   }
 
+  void openModalAddCharacter() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return ModalAddCharacterInCombat(combatId: id!);
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -127,7 +136,9 @@ class _CombatScreenState extends State<CombatScreen> {
                   width: 190,
                   child: ButtonCombat(
                     label: 'Adicionar jogador',
-                    onPress: () {},
+                    onPress: () {
+                      openModalAddCharacter();
+                    },
                     iconSelect: 0,
                   ),
                 ),
