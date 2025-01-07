@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rpg_dm_combat_assistant/Data/repositories/character_in_combat_repository.dart';
 import 'package:rpg_dm_combat_assistant/Data/repositories/character_repository.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Lists/ListPersonWIthAtributes.dart';
 
@@ -14,6 +15,8 @@ class ModalAddCharacterInCombat extends StatefulWidget {
 
 class _ModalAddCharacterInCombatState extends State<ModalAddCharacterInCombat> {
   final CharacterRepository characterRepository = CharacterRepository();
+  final CharacterInCombatRepository characterInCombatRepository =
+      CharacterInCombatRepository();
 
   List<Map<String, dynamic>> _characters = [];
 
@@ -34,6 +37,46 @@ class _ModalAddCharacterInCombatState extends State<ModalAddCharacterInCombat> {
     } catch (e) {
       print('Erro ao carregar personagens: $e');
     }
+  }
+
+  Future<void> processSelectedIds(List<int> selectedIds, int combatId) async {
+    for (final id in selectedIds) {
+      try {
+        final List<Map<String, dynamic>> characterData =
+            await characterRepository.getCharacterById(id);
+
+        if (characterData.isNotEmpty) {
+          final character = characterData.first;
+
+          // Prepara os dados para inserir na tabela 'monsters_participants'
+          final Map<String, dynamic> characterInCombat = {
+            'combat_id': combatId,
+            'character_id': character['id'],
+            'name': character['name'],
+            'type': 'character',
+            'player': character['player'],
+            'iniciative': character['iniciative'] ?? 0,
+            'armor': character['armor'],
+            'lifeMax': character['lifeMax'],
+            'lifeActual': character['lifeActual'],
+            'condition_1': character['condition_1'],
+            'condition_2': character['condition_2'],
+            'condition_3': character['condition_3'],
+            'condition_4': character['condition_4'],
+          };
+
+          // Insere os dados no banco de dados
+          await characterInCombatRepository
+              .insertCharacterInCombat(characterInCombat);
+        } else {
+          print('Nenhum dado encontrado para o ID $id');
+        }
+      } catch (e) {
+        print('Erro ao processar ID $id: $e');
+      }
+    }
+
+    print('Processamento concluído!');
   }
 
   @override
@@ -86,9 +129,13 @@ class _ModalAddCharacterInCombatState extends State<ModalAddCharacterInCombat> {
                   child: const Text('Cancelar'),
                 ),
                 TextButton(
-                  onPressed: () {
+                  onPressed: () async {
                     print(selectedIds);
-                    // Navigator.of(context).pop();
+
+                    final int combatId = widget.combatId;
+                    await processSelectedIds(selectedIds, combatId);
+
+                    Navigator.of(context).pop();
                   },
                   child: const Text('Confirmar'),
                 ),
