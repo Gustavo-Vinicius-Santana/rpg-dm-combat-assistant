@@ -1,6 +1,11 @@
 import '../db.dart';
 
 class CharacterInCombatRepository {
+  Future<int> insertCharacterInCombat(Map<String, dynamic> character) async {
+    final db = await DB.instance.database;
+    return db.insert('characters_participants', character);
+  }
+
   Future<List<Map<String, dynamic>>> getCharacterInCombatByCombatId(
       int id) async {
     final db = await DB.instance.database;
