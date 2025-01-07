@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:rpg_dm_combat_assistant/Data/repositories/character_repository.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Icons/IconsSvg.dart';
 
 class ListPersonWithAtributes extends StatefulWidget {
-  const ListPersonWithAtributes(
-      {super.key,
-      required this.itemsList,
-      required this.selectIcon,
-      required this.emptyList});
+  const ListPersonWithAtributes({
+    super.key,
+    required this.itemsList,
+    required this.selectIcon,
+    required this.emptyList,
+    required this.selectedIds,
+  });
 
   final String emptyList;
   final int selectIcon;
   final List<Map<String, dynamic>> itemsList;
+  final List<int> selectedIds;
 
   @override
   State<ListPersonWithAtributes> createState() =>
@@ -19,27 +21,7 @@ class ListPersonWithAtributes extends StatefulWidget {
 }
 
 class _ListPersonWithAtributesState extends State<ListPersonWithAtributes> {
-  final CharacterRepository characterRepository = CharacterRepository();
-  List<Map<String, dynamic>> _characters = [];
-
-  @override
-  void initState() {
-    super.initState();
-    print('estado iniciado');
-    _loadCharacters();
-  }
-
-  Future<void> _loadCharacters() async {
-    try {
-      final characters = await characterRepository.getAllCharacters();
-      setState(() {
-        _characters = characters;
-        print(_characters);
-      });
-    } catch (e) {
-      print('Erro ao carregar personagens: $e');
-    }
-  }
+  Set<int> _selectedIds = {};
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +36,8 @@ class _ListPersonWithAtributesState extends State<ListPersonWithAtributes> {
       AppIcons.monstrosBigCabecaIcon(),
       AppIcons.combateBigEspadasIcon(),
     ];
-    return _characters.isEmpty
+
+    return widget.itemsList.isEmpty
         ? Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -73,10 +56,10 @@ class _ListPersonWithAtributesState extends State<ListPersonWithAtributes> {
           )
         : ListView.builder(
             shrinkWrap: true,
-            itemCount: _characters.length,
+            itemCount: widget.itemsList.length,
             itemBuilder: (context, index) {
-              final item = _characters[index];
-              bool isChecked = false;
+              final item = widget.itemsList[index];
+              final int itemId = item['id'];
 
               return ListTile(
                 title: Row(
@@ -86,10 +69,17 @@ class _ListPersonWithAtributesState extends State<ListPersonWithAtributes> {
                       child: Text(item['name']),
                     ),
                     Checkbox(
-                      value: isChecked,
+                      value: _selectedIds.contains(itemId),
                       onChanged: (bool? value) {
                         setState(() {
-                          isChecked = value ?? false;
+                          if (value ?? false) {
+                            _selectedIds.add(itemId);
+                          } else {
+                            _selectedIds.remove(itemId);
+                          }
+                          widget.selectedIds
+                            ..clear()
+                            ..addAll(_selectedIds);
                         });
                       },
                     ),
