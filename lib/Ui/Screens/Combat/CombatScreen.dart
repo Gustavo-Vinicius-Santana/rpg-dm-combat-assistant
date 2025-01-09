@@ -4,6 +4,7 @@ import 'package:rpg_dm_combat_assistant/Data/repositories/combats_repository.dar
 import 'package:rpg_dm_combat_assistant/Data/repositories/monster_in_combat_repository.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Buttons/ButtonCombat.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Modals/ModalAddCharacterInCombat.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Components/Modals/ModalAddMonsterInCombat.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/TextBox/TimeAndTurnsBox.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Lists/ListCombat.dart';
 
@@ -95,6 +96,14 @@ class _CombatScreenState extends State<CombatScreen> {
         });
   }
 
+  void openModalAddMonster() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return ModalAddMonsterInCombat(combatId: id!);
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -128,7 +137,9 @@ class _CombatScreenState extends State<CombatScreen> {
                   width: 190,
                   child: ButtonCombat(
                     label: 'Adicionar monstro',
-                    onPress: () {},
+                    onPress: () {
+                      openModalAddMonster();
+                    },
                     iconSelect: 1,
                   ),
                 ),
