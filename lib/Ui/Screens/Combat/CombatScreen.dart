@@ -32,7 +32,9 @@ class _CombatScreenState extends State<CombatScreen> {
 
   String _title = '';
   String _time = '';
+  String _timeToNextTurn = '';
   int _turns = 0;
+  int _rounds = 0;
 
   int? id;
   @override
@@ -53,8 +55,10 @@ class _CombatScreenState extends State<CombatScreen> {
     print(combat);
     setState(() {
       _title = combat[0]['name'];
-      _time = combat[0]['time'];
+      _time = combat[0]['timeActual'];
       _turns = combat[0]['turns'];
+      _rounds = combat[0]['rounds'];
+      _timeToNextTurn = combat[0]['timeToNextTurn'];
     });
 
     await _loadMonsters(id);
@@ -102,6 +106,41 @@ class _CombatScreenState extends State<CombatScreen> {
         builder: (BuildContext context) {
           return ModalAddMonsterInCombat(combatId: id!);
         });
+  }
+
+  void nextTurn() async {
+    setState(() {
+      _turns += 1;
+    });
+
+    if (_personsInCombat.length >= _turns) {
+      Map<String, dynamic> combatNextTurn = {
+        'turns': _turns,
+      };
+
+      await _combatsRepository.updateCombat(id!, combatNextTurn);
+    }
+
+    if (_personsInCombat.length < _turns) {
+      int timeAsInt = int.parse(_time);
+      int timeToNextTurnInt = int.parse(_timeToNextTurn);
+      timeAsInt = timeAsInt + timeToNextTurnInt;
+      String timeActual = timeAsInt.toString();
+
+      Map<String, dynamic> combatNexRound = {
+        'rounds': _rounds + 1,
+        'timeActual': timeActual,
+        'turns': 0,
+      };
+
+      await _combatsRepository.updateCombat(id!, combatNexRound);
+
+      setState(() {
+        _rounds += 1;
+        _turns = 0;
+        _time = timeActual;
+      });
+    }
   }
 
   @override
@@ -160,7 +199,9 @@ class _CombatScreenState extends State<CombatScreen> {
               width: 250,
               child: ButtonCombat(
                 label: 'Proximo turno',
-                onPress: () {},
+                onPress: () {
+                  nextTurn();
+                },
                 iconSelect: 2,
               ),
             ),
@@ -169,7 +210,7 @@ class _CombatScreenState extends State<CombatScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 TimesAndTurnsBox(
-                  text: 'Rodadas: $_turns',
+                  text: 'Rodadas: $_rounds',
                 ),
                 TimesAndTurnsBox(
                   text: 'tempo: $_time',
