@@ -44,7 +44,7 @@ class DB {
     await db.insert('characters', {
       'player': 'Player 1',
       'name': 'Warrior',
-      'armor': 'Plate Armor',
+      'armor': '18',
       'lifeMax': 100,
       'lifeActual': 100,
     });
@@ -52,7 +52,7 @@ class DB {
     await db.insert('characters', {
       'player': 'Player 2',
       'name': 'Mage',
-      'armor': 'Robe',
+      'armor': '16',
       'lifeMax': 70,
       'lifeActual': 70,
     });
@@ -60,7 +60,7 @@ class DB {
     await db.insert('characters', {
       'player': 'Player 3',
       'name': 'Rogue',
-      'armor': 'Leather Armor',
+      'armor': '15',
       'lifeMax': 80,
       'lifeActual': 80,
     });
@@ -69,21 +69,21 @@ class DB {
     // Inserir monstros
     await db.insert('monsters', {
       'name': 'Goblin',
-      'armor': 'None',
+      'armor': '14',
       'lifeMax': 30,
       'lifeActual': 30,
     });
 
     await db.insert('monsters', {
       'name': 'Orc',
-      'armor': 'Leather',
+      'armor': '16',
       'lifeMax': 60,
       'lifeActual': 60,
     });
 
     await db.insert('monsters', {
       'name': 'Dragon',
-      'armor': 'Scale Armor',
+      'armor': '20',
       'lifeMax': 200,
       'lifeActual': 200,
     });
@@ -136,7 +136,7 @@ class DB {
       'name': 'Goblin',
       'type': 'monster',
       'iniciative': 7,
-      'armor': '16',
+      'armor': '14',
       'lifeMax': 30,
       'lifeActual': 30,
       'condition_1': 'fallen',
@@ -149,7 +149,7 @@ class DB {
       'name': 'Orc',
       'type': 'monster',
       'iniciative': 20,
-      'armor': '17',
+      'armor': '16',
       'lifeMax': 60,
       'lifeActual': 60,
       'condition_1': 'bleeding',
@@ -179,7 +179,7 @@ class DB {
       'name': 'Mage',
       'type': 'character',
       'iniciative': 16,
-      'armor': '17',
+      'armor': '16',
       'lifeMax': 70,
       'lifeActual': 70,
     });
