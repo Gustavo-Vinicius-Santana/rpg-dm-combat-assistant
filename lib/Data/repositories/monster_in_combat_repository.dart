@@ -22,4 +22,13 @@ class MonsterInCombatRepository {
       whereArgs: [id],
     );
   }
+
+  Future<int> deleteMonsterInCombat(int id) async {
+    final db = await DB.instance.database;
+    return db.delete(
+      'monsters_participants',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
 }

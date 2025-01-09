@@ -26,4 +26,13 @@ class CharacterInCombatRepository {
       whereArgs: [id],
     );
   }
+
+  Future<int> deleteCharacterInCombat(int id) async {
+    final db = await DB.instance.database;
+    return db.delete(
+      'characters_participants',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
 }

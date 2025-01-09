@@ -168,6 +168,28 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
     }
   }
 
+  void _deletePerson() async {
+    try {
+      if (widget.personType == 'character') {
+        await character_repository.deleteCharacterInCombat(widget.personId);
+        print("Personagem deletado com sucesso! ID: ${widget.personId}");
+      }
+
+      if (widget.personType == 'monster') {
+        await monster_repository.deleteMonsterInCombat(widget.personId);
+        print("Personagem deletado com sucesso! ID: ${widget.personId}");
+      }
+
+      Navigator.pushReplacementNamed(
+        context,
+        '/combatScreen',
+        arguments: widget.combatId,
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -181,9 +203,24 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              'Editar ${widget.personName}',
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Editar personagem',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.delete,
+                    color: Colors.red,
+                    size: 24.0,
+                  ),
+                  onPressed: () {
+                    _deletePerson();
+                  },
+                ),
+              ],
             ),
             const Divider(),
             const SizedBox(height: 8),
