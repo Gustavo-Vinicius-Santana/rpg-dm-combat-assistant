@@ -93,13 +93,17 @@ class DB {
     await db.insert('combats', {
       'name': 'Battle in the Forest',
       'turns': 0,
-      'time': '30',
+      'rounds': 0,
+      'timeActual': '30',
+      'timeToNextTurn': '6',
     });
 
     await db.insert('combats', {
       'name': 'Dungeon Encounter',
       'turns': 0,
-      'time': '30',
+      'rounds': 0,
+      'timeActual': '30',
+      'timeToNextTurn': '6',
     });
     // --------------------------------------------------------
 
@@ -219,7 +223,9 @@ class DB {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       turns INTEGER NOT NULL,
-      time TEXT NOT NULL
+      timeActual TEXT NOT NULL,
+      timeToNextTurn TEXT NOT NULL,
+      rounds INTEGER NOT NULL DEFAULT 0
     )
  ''';
 
