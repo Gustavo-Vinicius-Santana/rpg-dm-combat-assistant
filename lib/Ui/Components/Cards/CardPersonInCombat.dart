@@ -14,7 +14,8 @@ class CardPersonInCombat extends StatefulWidget {
       required this.iniciative,
       required this.conditions,
       required this.id,
-      required this.combatId});
+      required this.combatId,
+      required this.isTurn});
   final int id;
   final int combatId;
   final String name;
@@ -25,6 +26,8 @@ class CardPersonInCombat extends StatefulWidget {
   final int lifeMax;
   final int lifeActual;
   final List conditions;
+
+  final bool isTurn;
 
   @override
   State<CardPersonInCombat> createState() => _CardPersonInCombatState();
@@ -60,8 +63,12 @@ class _CardPersonInCombatState extends State<CardPersonInCombat> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(
             children: [
-              if (widget.type == 'character')
+              if (widget.type == 'character' && widget.isTurn)
+                AppIcons.jogadorCabecaIcon(color: Colors.blue)
+              else if (widget.type == 'character')
                 AppIcons.jogadorCabecaIcon()
+              else if (widget.type == 'monster' && widget.isTurn)
+                AppIcons.monstrosCabecaIcon(color: Colors.blue)
               else if (widget.type == 'monster')
                 AppIcons.monstrosCabecaIcon(),
               const SizedBox(width: 8),

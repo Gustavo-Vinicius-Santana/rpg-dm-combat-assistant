@@ -22,6 +22,7 @@ class _ButtonCombatState extends State<ButtonCombat> {
     AppIcons.jogadorCabecaIcon(color: Colors.white),
     AppIcons.monstrosCabecaIcon(color: Colors.white),
     AppIcons.combateEspadasIcon(color: Colors.white),
+    const Icon(Icons.refresh, color: Colors.white),
   ];
 
   @override

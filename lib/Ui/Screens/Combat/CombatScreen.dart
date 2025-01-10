@@ -198,11 +198,13 @@ class _CombatScreenState extends State<CombatScreen> {
             SizedBox(
               width: 250,
               child: ButtonCombat(
-                label: 'Proximo turno',
+                label: _personsInCombat.length == _turns
+                    ? 'Próxima rodada'
+                    : 'Próximo turno',
                 onPress: () {
                   nextTurn();
                 },
-                iconSelect: 2,
+                iconSelect: _personsInCombat.length == _turns ? 3 : 2,
               ),
             ),
             const SizedBox(height: 15),
@@ -228,6 +230,7 @@ class _CombatScreenState extends State<CombatScreen> {
               ),
             ),
             ListCombat(
+              actualTurn: _turns,
               personsInCombat: _personsInCombat,
             ),
           ],
