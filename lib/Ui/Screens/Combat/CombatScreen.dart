@@ -108,6 +108,14 @@ class _CombatScreenState extends State<CombatScreen> {
         });
   }
 
+  void openCombatEdit(int id) {
+    Navigator.pushNamed(
+      context,
+      '/combatEdit',
+      arguments: id,
+    );
+  }
+
   void nextTurn() async {
     setState(() {
       _turns += 1;
@@ -163,6 +171,7 @@ class _CombatScreenState extends State<CombatScreen> {
               icon: Icon(Icons.edit),
               onPressed: () {
                 print("Editar clicado!");
+                openCombatEdit(id!);
               },
             ),
           ],
