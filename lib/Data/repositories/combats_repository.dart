@@ -34,4 +34,34 @@ class CombatsRepository {
       whereArgs: [id],
     );
   }
+
+  Future<int> deleteRowsByIds(List<int> ids) async {
+    if (ids.isEmpty) return 0;
+
+    final db = await DB.instance.database;
+    final placeholders = List.filled(ids.length, '?').join(',');
+
+    return await db.transaction((txn) async {
+      // Deletar os participantes relacionados
+      for (final table in [
+        'characters_participants',
+        'monsters_participants'
+      ]) {
+        await txn.delete(
+          table,
+          where: 'combat_id IN ($placeholders)',
+          whereArgs: ids,
+        );
+      }
+
+      // Deletar os combates
+      final count = await txn.delete(
+        'combats',
+        where: 'id IN ($placeholders)',
+        whereArgs: ids,
+      );
+
+      return count;
+    });
+  }
 }
