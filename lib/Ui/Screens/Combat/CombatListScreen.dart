@@ -67,7 +67,9 @@ class _CombatlistscreenState extends State<Combatlistscreen> {
           : Column(
               children: [
                 ButtonAddItemList(
-                  actionAdd: () {},
+                  actionAdd: () {
+                    Navigator.pushNamed(context, '/combatRegister');
+                  },
                   actionDelete: () {},
                   label: 'Adicionar combate',
                   isDelete: false,

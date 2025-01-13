@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Screens/Character/CharacterEditScreen.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Screens/Character/CharacterRegister.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Screens/Combat/CombatEditScreen.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Screens/Combat/CombatRegister.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Screens/Combat/CombatScreen.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Screens/Monster/MonsterEditScreen.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Screens/Monster/MonsterRegister.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
         //ROTAS COMBATE
         '/combatScreen': (context) => CombatScreen(),
         '/combatEdit': (context) => CombatEditScreen(),
+        '/combatRegister': (context) => CombatRegister(),
       },
     );
   }
