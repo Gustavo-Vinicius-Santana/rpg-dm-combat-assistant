@@ -89,7 +89,6 @@ class _MonsterRegisterState extends State<MonsterRegister> {
         'armor': armor,
         'lifeMax': int.parse(maxHealth),
         'lifeActual': int.parse(minHealth),
-        'condition': 'alive',
       };
 
       try {

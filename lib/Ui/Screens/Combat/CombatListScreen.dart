@@ -44,6 +44,26 @@ class _CombatlistscreenState extends State<Combatlistscreen> {
     }
   }
 
+  Future<void> _openCombat(int id) async {
+    Navigator.pushNamed(
+      context,
+      '/combatScreen',
+      arguments: id,
+    );
+  }
+
+  Future<void> _deleteCharacter(List<int> id) async {
+    try {
+      await _combatsRepository.deleteRowsByIds(id);
+      setState(() {
+        selectedItemsToDelete.clear();
+      });
+      await _loadCombats();
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,10 +79,16 @@ class _CombatlistscreenState extends State<Combatlistscreen> {
           : Column(
               children: [
                 ButtonAddItemList(
-                  actionAdd: () {},
-                  actionDelete: () {},
-                  label: 'Adicionar combate',
-                  isDelete: false,
+                  actionAdd: () {
+                    Navigator.pushNamed(context, '/combatRegister');
+                  },
+                  actionDelete: () {
+                    _deleteCharacter(selectedItemsToDelete);
+                  },
+                  label: selectedItemsToDelete.isNotEmpty
+                      ? 'Deletar combate(s)'
+                      : 'Adicionar combate',
+                  isDelete: selectedItemsToDelete.isNotEmpty,
                 ),
                 Center(
                   child: Container(
@@ -73,7 +99,7 @@ class _CombatlistscreenState extends State<Combatlistscreen> {
                       emptyList: 'Não há combates cadastrados',
                       itemsList: _combats,
                       selectedItemsToDelete: selectedItemsToDelete,
-                      openEdit: () {},
+                      openEdit: _openCombat,
                       onSelectionChanged: (selectedItems) {
                         setState(() {
                           selectedItemsToDelete.clear();

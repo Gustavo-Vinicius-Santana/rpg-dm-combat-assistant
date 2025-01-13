@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Icons/IconsSvg.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Screens/Character/CharacterListScreen.dart';
-import 'package:rpg_dm_combat_assistant/Ui/Screens/CombatListScreen.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Screens/Combat/CombatListScreen.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Screens/Monster/MonsterListScreen.dart';
 
 class MyHomePage extends StatefulWidget {

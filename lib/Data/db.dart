@@ -25,37 +25,167 @@ class DB {
 
   _onCreate(Database db, int version) async {
     await db.execute(_characterTable);
-    await db.execute(_combatTable);
     await db.execute(_monsterTable);
+    await db.execute(_combatTable);
+
+    await db.execute(_personsInCombatTable);
+    await db.execute(_monstersParticipantsTable);
+    await db.execute(_charactersParticipantsTable);
 
     await db.execute(_conditionsTable);
-    await db.execute(_personsInCombatTable);
 
-    // INSERT TEST DATA
+    // INSERT DATA TEST
+    await innitialInsert(db);
+  }
+
+  Future<void> innitialInsert(Database db) async {
+    // Inserir personagens
+    // --------------------------------------------------------
     await db.insert('characters', {
       'player': 'Player 1',
-      'name': 'Character 1',
-      'armor': 'Light',
+      'name': 'Warrior',
+      'armor': '18',
       'lifeMax': 100,
       'lifeActual': 100,
-      'condition_1': 'Alive',
-      'condition_2': 'Alive',
-      'condition_3': 'Alive',
-      'condition_4': 'Alive',
+    });
+
+    await db.insert('characters', {
+      'player': 'Player 2',
+      'name': 'Mage',
+      'armor': '16',
+      'lifeMax': 70,
+      'lifeActual': 70,
+    });
+
+    await db.insert('characters', {
+      'player': 'Player 3',
+      'name': 'Rogue',
+      'armor': '15',
+      'lifeMax': 80,
+      'lifeActual': 80,
+    });
+    // --------------------------------------------------------
+
+    // Inserir monstros
+    await db.insert('monsters', {
+      'name': 'Goblin',
+      'armor': '14',
+      'lifeMax': 30,
+      'lifeActual': 30,
     });
 
     await db.insert('monsters', {
-      'name': 'Monster 1',
-      'armor': 'Light',
-      'lifeMax': 100,
-      'lifeActual': 100,
-      'condition': 'Alive',
+      'name': 'Orc',
+      'armor': '16',
+      'lifeMax': 60,
+      'lifeActual': 60,
+    });
+
+    await db.insert('monsters', {
+      'name': 'Dragon',
+      'armor': '20',
+      'lifeMax': 200,
+      'lifeActual': 200,
+    });
+    // --------------------------------------------------------
+
+    // Inserir combates
+    await db.insert('combats', {
+      'name': 'Battle in the Forest',
+      'turns': 0,
+      'rounds': 0,
+      'timeActual': '30',
+      'timeToNextTurn': '6',
     });
 
     await db.insert('combats', {
-      'name': 'Combat 1',
-      'turns': 1,
-      'time': '30',
+      'name': 'Dungeon Encounter',
+      'turns': 0,
+      'rounds': 0,
+      'timeActual': '30',
+      'timeToNextTurn': '6',
+    });
+    // --------------------------------------------------------
+
+    // Inserir participantes nos combates
+    await db.insert('persons_in_combat', {
+      'combat_id': 1,
+      'participant_type': 'character',
+      'participant_id': 1, // Refere-se ao ID do Warrior
+    });
+
+    await db.insert('persons_in_combat', {
+      'combat_id': 1,
+      'participant_type': 'monster',
+      'participant_id': 1, // Refere-se ao ID do Goblin
+    });
+
+    await db.insert('persons_in_combat', {
+      'combat_id': 2,
+      'participant_type': 'character',
+      'participant_id': 2, // Refere-se ao ID do Mage
+    });
+
+    await db.insert('persons_in_combat', {
+      'combat_id': 2,
+      'participant_type': 'monster',
+      'participant_id': 2, // Refere-se ao ID do Orc
+    });
+    // --------------------------------------------------------
+
+    // Inserir monstros participantes no combate
+    await db.insert('monsters_participants', {
+      'combat_id': 1,
+      'monster_id': 1, // Refere-se ao ID do Goblin
+      'name': 'Goblin',
+      'type': 'monster',
+      'iniciative': 7,
+      'armor': '14',
+      'lifeMax': 30,
+      'lifeActual': 30,
+      'condition_1': 'fallen',
+      'condition_2': 'poisoned',
+    });
+
+    await db.insert('monsters_participants', {
+      'combat_id': 2,
+      'monster_id': 2, // Refere-se ao ID do Orc
+      'name': 'Orc',
+      'type': 'monster',
+      'iniciative': 20,
+      'armor': '16',
+      'lifeMax': 60,
+      'lifeActual': 60,
+      'condition_1': 'bleeding',
+      'condition_2': 'poisoned',
+      'condition_3': 'raged',
+      'condition_4': 'confused',
+    });
+    // --------------------------------------------------------
+
+    // Inserir personagens participantes no combate
+    await db.insert('characters_participants', {
+      'combat_id': 1,
+      'character_id': 1,
+      'player': 'Player 1',
+      'name': 'Warrior',
+      'type': 'character',
+      'iniciative': 10,
+      'armor': '18',
+      'lifeMax': 100,
+      'lifeActual': 100,
+    });
+
+    await db.insert('characters_participants', {
+      'combat_id': 2,
+      'character_id': 2,
+      'player': 'Player 2',
+      'name': 'Mage',
+      'type': 'character',
+      'iniciative': 16,
+      'armor': '16',
+      'lifeMax': 70,
+      'lifeActual': 70,
     });
   }
 
@@ -67,36 +197,10 @@ class DB {
       armor TEXT NOT NULL,
       lifeMax INTEGER NOT NULL,
       lifeActual INTEGER NOT NULL,
-      condition_1 TEXT NOT NULL,
-      condition_2 TEXT NOT NULL,
-      condition_3 TEXT NOT NULL,
-      condition_4 TEXT NOT NULL
-    )
-  ''';
-
-  static const String _combatTable = '''
-    CREATE TABLE combats(
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL,
-      turns INTEGER NOT NULL,
-      time TEXT NOT NULL
-    )
- ''';
-
-  static const String _conditionsTable = '''
-    CREATE TABLE conditions(
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name_id TEXT NOT NULL
-      
-    )
-  ''';
-
-  static const String _personsInCombatTable = '''
-    CREATE TABLE persons_in_combat(
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      combat_id INTEGER NOT NULL,
-      character_id INTEGER NOT NULL,
-      monster_id INTEGER NOT NULL
+      condition_1 TEXT,
+      condition_2 TEXT,
+      condition_3 TEXT,
+      condition_4 TEXT
     )
   ''';
 
@@ -107,7 +211,80 @@ class DB {
       armor TEXT NOT NULL,
       lifeMax INTEGER NOT NULL,
       lifeActual INTEGER NOT NULL,
-      condition TEXT NOT NULL
+      condition_1 TEXT,
+      condition_2 TEXT,
+      condition_3 TEXT,
+      condition_4 TEXT
     )
  ''';
+
+  static const String _combatTable = '''
+    CREATE TABLE combats(
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      turns INTEGER NOT NULL,
+      timeActual TEXT NOT NULL,
+      timeToNextTurn TEXT NOT NULL,
+      rounds INTEGER NOT NULL DEFAULT 0
+    )
+ ''';
+
+  static const String _personsInCombatTable = '''
+    CREATE TABLE persons_in_combat(
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      combat_id INTEGER NOT NULL,
+      participant_type TEXT NOT NULL,
+      participant_id INTEGER NOT NULL,
+      FOREIGN KEY (combat_id) REFERENCES combats(id)
+    )
+  ''';
+
+  static const String _monstersParticipantsTable = '''
+    CREATE TABLE monsters_participants (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      combat_id INTEGER NOT NULL,
+      monster_id INTEGER NOT NULL,
+      name TEXT NOT NULL,
+      type TEXT NOT NULL,
+      iniciative interger,
+      armor TEXT NOT NULL,
+      lifeMax INTEGER NOT NULL,
+      lifeActual INTEGER NOT NULL,
+      condition_1 TEXT,
+      condition_2 TEXT,
+      condition_3 TEXT,
+      condition_4 TEXT,
+      FOREIGN KEY (combat_id) REFERENCES combats(id),
+      FOREIGN KEY (monster_id) REFERENCES monsters(id)
+    );
+  ''';
+
+  static const String _charactersParticipantsTable = '''
+    CREATE TABLE characters_participants (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      combat_id INTEGER NOT NULL,
+      character_id INTEGER NOT NULL,
+      player TEXT NOT NULL,
+      name TEXT NOT NULL,
+      type TEXT NOT NULL,
+      iniciative interger,
+      armor TEXT NOT NULL,
+      lifeMax INTEGER NOT NULL,
+      lifeActual INTEGER NOT NULL,
+      condition_1 TEXT,
+      condition_2 TEXT,
+      condition_3 TEXT,
+      condition_4 TEXT,
+      FOREIGN KEY (combat_id) REFERENCES combats(id),
+      FOREIGN KEY (character_id) REFERENCES characters(id)
+    );
+  ''';
+
+  static const String _conditionsTable = '''
+    CREATE TABLE conditions(
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name_id TEXT NOT NULL
+      
+    )
+  ''';
 }
