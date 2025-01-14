@@ -213,7 +213,7 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
                 IconButton(
                   icon: const Icon(
                     Icons.delete,
-                    color: Colors.red,
+                    color: Colors.grey,
                     size: 24.0,
                   ),
                   onPressed: () {
@@ -321,14 +321,14 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
                         onPressed: () {
                           print('remover condição');
                         },
-                        textInButton: 'remover condição',
+                        textInButton: 'remover',
                       ),
                     if (widget.personConditions.length < 4) ...[
                       ButtonAction(
                         onPressed: () {
                           print('adicionar condição');
                         },
-                        textInButton: 'adicionar condição',
+                        textInButton: 'adicionar',
                       ),
                       if (widget.personConditions.isNotEmpty)
                         ButtonAction(
