@@ -35,7 +35,7 @@ class DB {
     await db.execute(_conditionsTable);
 
     // INSERT DATA TEST
-    // await innitialInsert(db);
+    await innitialInsert(db);
   }
 
   Future<void> innitialInsert(Database db) async {

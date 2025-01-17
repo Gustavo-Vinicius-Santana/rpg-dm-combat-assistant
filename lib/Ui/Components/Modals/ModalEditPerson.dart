@@ -291,55 +291,56 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    if (widget.personConditions.isNotEmpty) ...[
-                      for (var condition in widget.personConditions)
-                        Container(
-                          margin: const EdgeInsets.only(right: 8),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            condition,
-                            style: const TextStyle(fontSize: 12),
-                          ),
+                    ElevatedButton(
+                      onPressed: () {
+                        print("ir para gerenciar condições");
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                    ] else
-                      const Text(
-                        "Não há condições",
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
                       ),
+                      child: const Text(
+                        'Gerenciar condições',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
                   ],
                 ),
+                const SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    if (widget.personConditions.length >= 4)
-                      ButtonAction(
-                        onPressed: () {
-                          print('remover condição');
+                    Container(
+                      width: 200,
+                      height: 100,
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        itemCount: widget.personConditions.length,
+                        itemBuilder: (context, index) {
+                          return Column(children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 5),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                widget.personConditions[index],
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                          ]);
                         },
-                        textInButton: 'remover',
                       ),
-                    if (widget.personConditions.length < 4) ...[
-                      ButtonAction(
-                        onPressed: () {
-                          print('adicionar condição');
-                        },
-                        textInButton: 'adicionar',
-                      ),
-                      if (widget.personConditions.isNotEmpty)
-                        ButtonAction(
-                          onPressed: () {
-                            print('remover condição');
-                          },
-                          textInButton: 'remover condição',
-                        ),
-                    ],
+                    )
                   ],
-                )
+                ),
               ],
             ),
             const SizedBox(height: 16),
