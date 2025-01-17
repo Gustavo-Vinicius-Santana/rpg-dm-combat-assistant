@@ -31,4 +31,23 @@ class MonsterInCombatRepository {
       whereArgs: [id],
     );
   }
+
+  Future<List<Map<String, dynamic>>> getMonsterConditions(int id) async {
+    final db = await DB.instance.database;
+
+    // Consulta para retornar apenas as colunas de condições
+    final result = await db.query(
+      'monsters_participants',
+      columns: [
+        'condition_1',
+        'condition_2',
+        'condition_3',
+        'condition_4'
+      ], // Só as colunas de condições
+      where: 'combat_id = ?',
+      whereArgs: [id],
+    );
+
+    return result; // Retorna o resultado da consulta
+  }
 }
