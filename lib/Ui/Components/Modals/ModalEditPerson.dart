@@ -293,7 +293,10 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        print("ir para gerenciar condições");
+                        print("ir para gerenciar condições ${widget.personId}");
+
+                        Navigator.pushNamed(context, '/personConditionScreen',
+                            arguments: widget.personId);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
