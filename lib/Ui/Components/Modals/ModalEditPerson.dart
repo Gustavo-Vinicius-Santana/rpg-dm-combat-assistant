@@ -55,13 +55,13 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
   @override
   void initState() {
     super.initState();
-
+    _loadPerson(widget.personId);
     // Inicializar os controladores com os valores iniciais
-    _namePersonController.text = widget.personName;
-    _iniciativeController.text = widget.personIniciative.toString();
-    _armorController.text = widget.personArmor;
-    _maxHealthController.text = widget.personLifeMax.toString();
-    _minHealthController.text = widget.personLifeActual.toString();
+    // _namePersonController.text = widget.personName;
+    // _iniciativeController.text = widget.personIniciative.toString();
+    // _armorController.text = widget.personArmor;
+    // _maxHealthController.text = widget.personLifeMax.toString();
+    // _minHealthController.text = widget.personLifeActual.toString();
 
     // Adicionar listeners aos controladores
     _namePersonController.addListener(() {
@@ -79,6 +79,35 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
     _minHealthController.addListener(() {
       _clearErrorMessage(_messageErrorMinHealth);
     });
+  }
+
+  void _loadPerson(personId) async {
+    print("Carregando personagem de ID: $personId");
+    try {
+      if (widget.personType == 'character') {
+        final character =
+            await character_repository.getCharacterInCombatById(personId);
+        setState(() {
+          _namePersonController.text = character[0]['name'];
+          _iniciativeController.text = character[0]['iniciative'].toString();
+          _armorController.text = character[0]['armor'];
+          _maxHealthController.text = character[0]['lifeMax'].toString();
+          _minHealthController.text = character[0]['lifeActual'].toString();
+        });
+      } else if (widget.personType == 'monster') {
+        final monster =
+            await monster_repository.getMonsterInCombatById(personId);
+        setState(() {
+          _namePersonController.text = monster[0]['name'];
+          _iniciativeController.text = monster[0]['iniciative'].toString();
+          _armorController.text = monster[0]['armor'];
+          _maxHealthController.text = monster[0]['lifeMax'].toString();
+          _minHealthController.text = monster[0]['lifeActual'].toString();
+        });
+      }
+    } catch (e) {
+      print('Erro ao carregar o personagem: $e');
+    }
   }
 
   void _clearErrorMessage(String? errorMessage) {
