@@ -42,12 +42,6 @@ class _CardPersonInCombatState extends State<CardPersonInCombat> {
           personId: widget.id,
           combatId: widget.combatId,
           personType: widget.type,
-          personName: widget.name,
-          personIniciative: widget.iniciative,
-          personLifeMax: widget.lifeMax,
-          personLifeActual: widget.lifeActual,
-          personArmor: widget.armor,
-          personConditions: widget.conditions,
         );
       },
     );

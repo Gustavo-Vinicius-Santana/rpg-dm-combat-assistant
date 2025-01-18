@@ -9,12 +9,6 @@ import 'package:rpg_dm_combat_assistant/Ui/Components/Lists/ListConditionsEditOr
 class ModalEditPerson extends StatefulWidget {
   const ModalEditPerson({
     super.key,
-    required this.personName,
-    required this.personIniciative,
-    required this.personLifeMax,
-    required this.personLifeActual,
-    required this.personArmor,
-    required this.personConditions,
     required this.personId,
     required this.personType,
     required this.combatId,
@@ -22,12 +16,6 @@ class ModalEditPerson extends StatefulWidget {
   final int personId;
   final int combatId;
   final String personType;
-  final String personName;
-  final int personIniciative;
-  final int personLifeMax;
-  final int personLifeActual;
-  final String personArmor;
-  final List personConditions;
 
   @override
   _ModalEditPersonState createState() => _ModalEditPersonState();
@@ -52,16 +40,12 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
   String? _messageErrorMaxHealth;
   String? _messageErrorMinHealth;
 
+  List _conditions = [];
+
   @override
   void initState() {
     super.initState();
     _loadPerson(widget.personId);
-    // Inicializar os controladores com os valores iniciais
-    // _namePersonController.text = widget.personName;
-    // _iniciativeController.text = widget.personIniciative.toString();
-    // _armorController.text = widget.personArmor;
-    // _maxHealthController.text = widget.personLifeMax.toString();
-    // _minHealthController.text = widget.personLifeActual.toString();
 
     // Adicionar listeners aos controladores
     _namePersonController.addListener(() {
@@ -93,6 +77,12 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
           _armorController.text = character[0]['armor'];
           _maxHealthController.text = character[0]['lifeMax'].toString();
           _minHealthController.text = character[0]['lifeActual'].toString();
+          _conditions = [
+            character[0]['condition_1'],
+            character[0]['condition_2'],
+            character[0]['condition_3'],
+            character[0]['condition_4']
+          ].where((condition) => condition != null).toList();
         });
       } else if (widget.personType == 'monster') {
         final monster =
@@ -103,6 +93,12 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
           _armorController.text = monster[0]['armor'];
           _maxHealthController.text = monster[0]['lifeMax'].toString();
           _minHealthController.text = monster[0]['lifeActual'].toString();
+          _conditions = [
+            monster[0]['condition_1'],
+            monster[0]['condition_2'],
+            monster[0]['condition_3'],
+            monster[0]['condition_4']
+          ].where((condition) => condition != null).toList();
         });
       }
     } catch (e) {
@@ -349,7 +345,7 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
                       width: 275,
                       height: 200,
                       child: ListConditionsEditOrDelete(
-                          personConditions: widget.personConditions),
+                          personConditions: _conditions),
                     ),
                   ],
                 ),
