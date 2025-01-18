@@ -4,6 +4,7 @@ import 'package:rpg_dm_combat_assistant/Data/repositories/monster_in_combat_repo
 import 'package:rpg_dm_combat_assistant/Ui/Components/Buttons/ButtonAction.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Input/InputNumberInt.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Input/InputText.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Components/TextBox/ConditionTextBox.dart';
 
 class ModalEditPerson extends StatefulWidget {
   const ModalEditPerson({
@@ -190,6 +191,13 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
     }
   }
 
+  void _goToConditions(personageId) {
+    print("ir para gerenciar condições ${personageId}");
+
+    Navigator.pushNamed(context, '/personConditionScreen',
+        arguments: personageId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -291,23 +299,14 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ElevatedButton(
+                    ButtonAction(
+                      fontSize: 14,
+                      width: 180,
+                      height: 30,
                       onPressed: () {
-                        print("ir para gerenciar condições ${widget.personId}");
-
-                        Navigator.pushNamed(context, '/personConditionScreen',
-                            arguments: widget.personId);
+                        _goToConditions(widget.personId);
                       },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: const Text(
-                        'Gerenciar condições',
-                        style: TextStyle(color: Colors.white),
-                      ),
+                      textInButton: 'Gerenciar condições',
                     ),
                   ],
                 ),
@@ -323,19 +322,8 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
                         itemCount: widget.personConditions.length,
                         itemBuilder: (context, index) {
                           return Column(children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 50, vertical: 5),
-                              decoration: BoxDecoration(
-                                color: Colors.grey[300],
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text(
-                                widget.personConditions[index],
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ),
+                            ConditionTextBox(
+                              condition: widget.personConditions[index],
                             ),
                             const SizedBox(height: 8),
                           ]);

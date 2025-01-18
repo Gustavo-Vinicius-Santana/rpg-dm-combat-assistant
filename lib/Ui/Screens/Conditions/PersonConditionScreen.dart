@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rpg_dm_combat_assistant/Data/repositories/monster_in_combat_repository.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Components/Buttons/ButtonAction.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Components/TextBox/ConditionTextBox.dart';
 
 class PersonConditionScreen extends StatefulWidget {
   const PersonConditionScreen({super.key});
@@ -66,20 +68,14 @@ class _PersonConditionScreenState extends State<PersonConditionScreen> {
       body: Center(
         child: Column(
           children: [
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
+            ButtonAction(
               onPressed: () {
                 testeEdit();
               },
-              child: const Text(
-                'Adicionar condição',
-                style: TextStyle(color: Colors.white),
-              ),
+              textInButton: 'Adicionar condição',
+              fontSize: 18,
+              width: 375,
+              height: 50,
             ),
             const Text(
               'CONDIÇÕES',
@@ -97,20 +93,7 @@ class _PersonConditionScreenState extends State<PersonConditionScreen> {
                 itemCount: _personConditionsList.length,
                 itemBuilder: (context, index) {
                   return Column(children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 50, vertical: 5),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        _personConditionsList[index] as String,
-                        style: const TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
+                    ConditionTextBox(condition: _personConditionsList[index]),
                     const SizedBox(height: 8),
                   ]);
                 },
