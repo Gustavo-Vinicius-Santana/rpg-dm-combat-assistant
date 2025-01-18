@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:rpg_dm_combat_assistant/Data/repositories/character_in_combat_repository.dart';
 import 'package:rpg_dm_combat_assistant/Data/repositories/monster_in_combat_repository.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Buttons/ButtonAction.dart';
-import 'package:rpg_dm_combat_assistant/Ui/Components/Cards/CardConditionEditOrDelete.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Input/InputNumberInt.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Input/InputText.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Components/Lists/ListConditionsEditOrDelete.dart';
 
 class ModalEditPerson extends StatefulWidget {
   const ModalEditPerson({
@@ -319,19 +319,9 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
                     Container(
                       width: 275,
                       height: 200,
-                      child: ListView.builder(
-                        padding: EdgeInsets.zero,
-                        itemCount: widget.personConditions.length,
-                        itemBuilder: (context, index) {
-                          return Column(children: [
-                            CardConditionEditOrDelete(
-                              name: widget.personConditions[index],
-                              description: 'teste',
-                            ),
-                          ]);
-                        },
-                      ),
-                    )
+                      child: ListConditionsEditOrDelete(
+                          personConditions: widget.personConditions),
+                    ),
                   ],
                 ),
               ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rpg_dm_combat_assistant/Data/repositories/monster_in_combat_repository.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Buttons/ButtonAction.dart';
-import 'package:rpg_dm_combat_assistant/Ui/Components/Cards/CardConditionWithDescription.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Components/Lists/ListConditionsSelectOrDelete.dart';
 
 class PersonConditionScreen extends StatefulWidget {
   const PersonConditionScreen({super.key});
@@ -15,7 +15,7 @@ class _PersonConditionScreenState extends State<PersonConditionScreen> {
       MonsterInCombatRepository();
 
   List<Map<String, dynamic>> _mapConditions = [];
-  List _conditionsList = [];
+  List _conditionsList = ['teste'];
 
   void _loadConditions(int id) async {
     print('Carregando todas as condições');
@@ -43,17 +43,8 @@ class _PersonConditionScreenState extends State<PersonConditionScreen> {
             Container(
               width: 375,
               height: 500,
-              child: ListView.builder(
-                padding: EdgeInsets.zero,
-                itemCount: _conditionsList.length,
-                itemBuilder: (context, index) {
-                  return CardConditionWhithDescription(
-                    name: _conditionsList[index],
-                    description: 'teste',
-                    type: 'select',
-                  );
-                },
-              ),
+              child:
+                  ListConditionsSelectOrDelete(conditionsList: _conditionsList),
             )
           ],
         ),
