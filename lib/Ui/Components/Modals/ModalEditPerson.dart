@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:rpg_dm_combat_assistant/Data/repositories/character_in_combat_repository.dart';
 import 'package:rpg_dm_combat_assistant/Data/repositories/monster_in_combat_repository.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Buttons/ButtonAction.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Components/Cards/CardConditionEditOrDelete.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Input/InputNumberInt.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Input/InputText.dart';
-import 'package:rpg_dm_combat_assistant/Ui/Components/TextBox/ConditionTextBox.dart';
 
 class ModalEditPerson extends StatefulWidget {
   const ModalEditPerson({
@@ -191,11 +191,13 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
     }
   }
 
-  void _goToConditions(personageId) {
-    print("ir para gerenciar condições ${personageId}");
+  void _goToConditions() {
+    print("Ir para tela de adicionar condições");
 
-    Navigator.pushNamed(context, '/personConditionScreen',
-        arguments: personageId);
+    Navigator.pushNamed(
+      context,
+      '/addConditionScreen',
+    );
   }
 
   @override
@@ -304,9 +306,9 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
                       width: 180,
                       height: 30,
                       onPressed: () {
-                        _goToConditions(widget.personId);
+                        _goToConditions();
                       },
-                      textInButton: 'Gerenciar condições',
+                      textInButton: 'Adicionar condições',
                     ),
                   ],
                 ),
@@ -315,17 +317,17 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      width: 200,
-                      height: 100,
+                      width: 275,
+                      height: 200,
                       child: ListView.builder(
                         padding: EdgeInsets.zero,
                         itemCount: widget.personConditions.length,
                         itemBuilder: (context, index) {
                           return Column(children: [
-                            ConditionTextBox(
-                              condition: widget.personConditions[index],
+                            CardConditionEditOrDelete(
+                              name: widget.personConditions[index],
+                              description: 'teste',
                             ),
-                            const SizedBox(height: 8),
                           ]);
                         },
                       ),
