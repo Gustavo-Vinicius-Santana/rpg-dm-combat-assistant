@@ -15,7 +15,8 @@ class CardPersonInCombat extends StatefulWidget {
       required this.conditions,
       required this.id,
       required this.combatId,
-      required this.isTurn});
+      required this.isTurn,
+      this.infoOpenModal});
   final int id;
   final int combatId;
   final String name;
@@ -29,11 +30,30 @@ class CardPersonInCombat extends StatefulWidget {
 
   final bool isTurn;
 
+  final List<dynamic>? infoOpenModal;
+
   @override
   State<CardPersonInCombat> createState() => _CardPersonInCombatState();
 }
 
 class _CardPersonInCombatState extends State<CardPersonInCombat> {
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.infoOpenModal != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        print("Conteúdo de infoOpenModal: ${widget.infoOpenModal}");
+        if (widget.infoOpenModal?[0] == widget.id &&
+            widget.infoOpenModal?[1] == widget.type) {
+          openModal();
+        } else {
+          print('infoOpenModal contém valores inesperados ou inválidos!');
+        }
+      });
+    }
+  }
+
   void openModal() {
     showDialog(
       context: context,

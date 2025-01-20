@@ -3,9 +3,14 @@ import 'package:rpg_dm_combat_assistant/Ui/Components/Cards/CardPersonInCombat.d
 
 class ListCombat extends StatefulWidget {
   const ListCombat(
-      {super.key, required this.personsInCombat, required this.actualTurn});
+      {super.key,
+      required this.personsInCombat,
+      required this.actualTurn,
+      this.idOpenModal});
   final int actualTurn;
   final List<Map<String, dynamic>> personsInCombat;
+
+  final List<dynamic>? idOpenModal;
 
   @override
   State<ListCombat> createState() => _ListCombatState();
@@ -38,6 +43,7 @@ class _ListCombatState extends State<ListCombat> {
           print('CONDIÇÕES DO PERSONAGEM ${person['name']}: $conditions');
 
           return CardPersonInCombat(
+            infoOpenModal: widget.idOpenModal,
             isTurn: isActive,
             id: person['id'],
             combatId: person['combat_id'],

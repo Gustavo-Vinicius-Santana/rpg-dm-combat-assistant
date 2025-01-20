@@ -222,6 +222,10 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
     Navigator.pushNamed(
       context,
       '/addConditionScreen',
+      arguments: {
+        'id': widget.personId,
+        'type': widget.personType,
+      },
     );
   }
 
