@@ -187,6 +187,26 @@ class DB {
       'lifeMax': 70,
       'lifeActual': 70,
     });
+
+    await db.insert('conditions', {
+      'name_id': 'fallen',
+      'description': 'The character is falling.',
+    });
+
+    await db.insert('conditions', {
+      'name_id': 'poisoned',
+      'description': 'The character is poisoned.',
+    });
+
+    await db.insert('conditions', {
+      'name_id': 'bleeding',
+      'description': 'The character is bleeding.',
+    });
+
+    await db.insert('conditions', {
+      'name_id': 'raged',
+      'description': 'The character is raging.',
+    });
   }
 
   static const String _characterTable = '''
@@ -283,8 +303,8 @@ class DB {
   static const String _conditionsTable = '''
     CREATE TABLE conditions(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name_id TEXT NOT NULL
-      
+      name_id TEXT NOT NULL,
+      description TEXT
     )
   ''';
 }
