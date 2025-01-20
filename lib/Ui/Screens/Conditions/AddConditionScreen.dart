@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rpg_dm_combat_assistant/Data/repositories/character_in_combat_repository.dart';
+import 'package:rpg_dm_combat_assistant/Data/repositories/conditions_repository.dart';
 import 'package:rpg_dm_combat_assistant/Data/repositories/monster_in_combat_repository.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Buttons/ButtonAction.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Lists/ListConditionsSelectOrDelete.dart';
@@ -17,8 +18,9 @@ class _PersonConditionScreenState extends State<PersonConditionScreen> {
   final CharacterInCombatRepository character_repository =
       CharacterInCombatRepository();
 
+  final ConditionsRepository conditions_repository = ConditionsRepository();
+
   List<Map<String, dynamic>> _mapConditions = [];
-  List _conditionsList = ['teste'];
 
   List? listPersonConditions;
 
@@ -35,7 +37,15 @@ class _PersonConditionScreenState extends State<PersonConditionScreen> {
       type = arguments['type'];
 
       _loadPersonConditions(id!);
+      _loadConditions();
     }
+  }
+
+  void _loadConditions() async {
+    final dataCondition = await conditions_repository.getAllConditions();
+    setState(() {
+      _mapConditions = dataCondition;
+    });
   }
 
   void _loadPersonConditions(int id) async {
@@ -123,7 +133,7 @@ class _PersonConditionScreenState extends State<PersonConditionScreen> {
               width: 375,
               height: 500,
               child:
-                  ListConditionsSelectOrDelete(conditionsList: _conditionsList),
+                  ListConditionsSelectOrDelete(conditionsList: _mapConditions),
             )
           ],
         ),

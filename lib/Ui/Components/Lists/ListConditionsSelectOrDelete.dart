@@ -20,8 +20,8 @@ class _ListConditionsSelectOrDeleteState
       itemCount: widget.conditionsList.length,
       itemBuilder: (context, index) {
         return CardConditionWhithDescription(
-          name: widget.conditionsList[index],
-          description: 'teste',
+          name: widget.conditionsList[index]['name_id'],
+          description: widget.conditionsList[index]['description'],
           type: 'select',
         );
       },
