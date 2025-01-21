@@ -5,10 +5,15 @@ class CardConditionWhithDescription extends StatefulWidget {
       {super.key,
       required this.name,
       required this.description,
-      required this.type});
+      required this.type,
+      required this.selectedIds,
+      required this.id});
+  final int id;
   final String name;
   final String description;
   final String type;
+
+  final List<int> selectedIds;
 
   @override
   State<CardConditionWhithDescription> createState() =>
@@ -17,7 +22,13 @@ class CardConditionWhithDescription extends StatefulWidget {
 
 class _CardConditionWhithDescriptionState
     extends State<CardConditionWhithDescription> {
-  bool isChecked = false;
+  late bool isChecked;
+
+  @override
+  void initState() {
+    super.initState();
+    isChecked = widget.selectedIds.contains(widget.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +54,11 @@ class _CardConditionWhithDescriptionState
                     onChanged: (bool? value) {
                       setState(() {
                         isChecked = value ?? false;
+                        if (isChecked) {
+                          widget.selectedIds.add(widget.id);
+                        } else {
+                          widget.selectedIds.remove(widget.id);
+                        }
                       });
                     },
                   )
