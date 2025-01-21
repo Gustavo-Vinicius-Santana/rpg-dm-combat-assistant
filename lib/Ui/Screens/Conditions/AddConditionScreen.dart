@@ -4,6 +4,7 @@ import 'package:rpg_dm_combat_assistant/Data/repositories/conditions_repository.
 import 'package:rpg_dm_combat_assistant/Data/repositories/monster_in_combat_repository.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Buttons/ButtonAction.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Lists/ListConditionsSelectOrDelete.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Components/Loadings/Loading.dart';
 
 class PersonConditionScreen extends StatefulWidget {
   const PersonConditionScreen({super.key});
@@ -29,6 +30,8 @@ class _PersonConditionScreenState extends State<PersonConditionScreen> {
   int? id;
   String? type;
 
+  bool isLoading = true;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -38,65 +41,92 @@ class _PersonConditionScreenState extends State<PersonConditionScreen> {
       id = arguments['id'];
       type = arguments['type'];
 
-      _loadPersonConditions(id!);
-      _loadConditions();
+      _initializeData();
     }
   }
 
-  void _setConditionsPersonSetlected(String conditionToCompare) async {
-    final allConditions = await conditions_repository.getAllConditions();
+  Future<void> _initializeData() async {
+    setState(() {
+      isLoading = true; // Inicia o carregamento
+    });
 
-    for (final condition in allConditions) {
-      if (condition['name_id'] == conditionToCompare) {
-        setState(() {
-          idsConditionsSelectedToAdd.add(condition['id']);
-        });
+    // Aguardar o carregamento das condições e das condições do personagem
+    await Future.wait([
+      _loadConditions(),
+      _loadPersonConditions(id!),
+    ]);
+
+    // Após o carregamento, configurar as condições selecionadas
+    if (listPersonConditions != null) {
+      for (final condition in listPersonConditions!) {
+        await _setConditionsPersonSetlected(condition);
       }
     }
+
+    setState(() {
+      isLoading = false; // Finaliza o carregamento
+    });
   }
 
-  void _loadConditions() async {
+  Future<void> _setConditionsPersonSetlected(String? conditionToCompare) async {
+    if (conditionToCompare == null || conditionToCompare.isEmpty) return;
+
+    try {
+      final allConditions = await conditions_repository.getAllConditions();
+
+      for (final condition in allConditions) {
+        if (condition['name_id'] == conditionToCompare &&
+            !idsConditionsSelectedToAdd.contains(condition['id'])) {
+          setState(() {
+            idsConditionsSelectedToAdd.add(condition['id']);
+          });
+        }
+      }
+    } catch (e) {
+      print('Erro ao definir condição selecionada: $e');
+    }
+  }
+
+  Future<void> _loadConditions() async {
     final dataCondition = await conditions_repository.getAllConditions();
     setState(() {
       _mapConditions = dataCondition;
     });
   }
 
-  void _loadPersonConditions(int id) async {
-    print('Carregando todas as condições');
+  Future<void> _loadPersonConditions(int id) async {
+    try {
+      print('Carregando todas as condições');
 
-    if (type == 'character') {
-      final dataConditionPerson =
-          await character_repository.getCharacterConditions(id);
+      List<Map<String, dynamic>>? dataConditionPerson;
 
-      listPersonConditions = [
-        dataConditionPerson[0]['condition_1'],
-        dataConditionPerson[0]['condition_2'],
-        dataConditionPerson[0]['condition_3'],
-        dataConditionPerson[0]['condition_4'],
-      ].where((condition) => condition != null).toList();
+      if (type == 'character') {
+        dataConditionPerson =
+            await character_repository.getCharacterConditions(id);
+      } else if (type == 'monster') {
+        dataConditionPerson = await monster_repository.getMonsterConditions(id);
+      }
 
-      _setConditionsPersonSetlected(listPersonConditions?[0]);
-      _setConditionsPersonSetlected(listPersonConditions?[1]);
-      _setConditionsPersonSetlected(listPersonConditions?[2]);
-      _setConditionsPersonSetlected(listPersonConditions?[3]);
-    }
+      if (dataConditionPerson != null && dataConditionPerson.isNotEmpty) {
+        final conditions = [
+          dataConditionPerson[0]['condition_1'],
+          dataConditionPerson[0]['condition_2'],
+          dataConditionPerson[0]['condition_3'],
+          dataConditionPerson[0]['condition_4'],
+        ].where((condition) => condition != null).toList();
 
-    if (type == 'monster') {
-      final dataConditionPerson =
-          await monster_repository.getMonsterConditions(id);
+        setState(() {
+          listPersonConditions = conditions.cast<String>();
+        });
 
-      listPersonConditions = [
-        dataConditionPerson[0]['condition_1'],
-        dataConditionPerson[0]['condition_2'],
-        dataConditionPerson[0]['condition_3'],
-        dataConditionPerson[0]['condition_4'],
-      ].where((condition) => condition != null).toList();
-
-      _setConditionsPersonSetlected(listPersonConditions?[0]);
-      _setConditionsPersonSetlected(listPersonConditions?[1]);
-      _setConditionsPersonSetlected(listPersonConditions?[2]);
-      _setConditionsPersonSetlected(listPersonConditions?[3]);
+        for (final condition in listPersonConditions!) {
+          _setConditionsPersonSetlected(condition);
+        }
+      } else {
+        print('Nenhuma condição encontrada para o ID fornecido.');
+      }
+    } catch (e) {
+      print('Erro ao carregar condições da pessoa: $e');
     }
   }
 
@@ -166,35 +196,52 @@ class _PersonConditionScreenState extends State<PersonConditionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Adicionar Condições'),
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            ButtonAction(
-              onPressed: () {
-                print('Adicionar condição');
-
-                _addCondition(id!);
-              },
-              textInButton: 'Adicionar condição',
-              fontSize: 18,
-              width: 375,
-              height: 50,
-            ),
-            const SizedBox(height: 20),
-            Container(
-              width: 375,
-              height: 500,
-              child: ListConditionsSelectOrDelete(
-                conditionsList: _mapConditions,
-                idsSelected: idsConditionsSelectedToAdd,
-              ),
-            )
-          ],
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pushReplacementNamed(
+          context,
+          '/combatScreen',
+          arguments: {
+            'id': id,
+            'openModal': [id, type],
+          },
+        );
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Adicionar Condições'),
         ),
+        body: isLoading
+            ? const Center(
+                child: Loading(),
+              )
+            : Center(
+                child: Column(
+                  children: [
+                    ButtonAction(
+                      onPressed: () {
+                        print('Adicionar condição');
+
+                        _addCondition(id!);
+                      },
+                      textInButton: 'Adicionar condição',
+                      fontSize: 18,
+                      width: 375,
+                      height: 50,
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      width: 375,
+                      height: 500,
+                      child: ListConditionsSelectOrDelete(
+                        conditionsList: _mapConditions,
+                        idsSelected: idsConditionsSelectedToAdd,
+                      ),
+                    )
+                  ],
+                ),
+              ),
       ),
     );
   }
