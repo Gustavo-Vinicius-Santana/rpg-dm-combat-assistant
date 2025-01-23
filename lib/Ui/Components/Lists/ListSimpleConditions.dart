@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:rpg_dm_combat_assistant/Ui/Components/Cards/CardConditionEditOrDelete.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Components/Cards/CardSimpleCondition%20.dart';
 
-class ListConditionsEditOrDelete extends StatefulWidget {
-  const ListConditionsEditOrDelete({super.key, required this.personConditions});
+class ListSimpleConditions extends StatefulWidget {
+  const ListSimpleConditions({super.key, required this.personConditions});
   final List personConditions;
 
   @override
-  State<ListConditionsEditOrDelete> createState() =>
-      _ListConditionsEditOrDeleteState();
+  State<ListSimpleConditions> createState() => _ListSimpleConditionsState();
 }
 
-class _ListConditionsEditOrDeleteState
-    extends State<ListConditionsEditOrDelete> {
+class _ListSimpleConditionsState extends State<ListSimpleConditions> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -19,7 +17,7 @@ class _ListConditionsEditOrDeleteState
       itemCount: widget.personConditions.length,
       itemBuilder: (context, index) {
         return Column(children: [
-          CardConditionEditOrDelete(
+          CardSimpleCondition(
             name: widget.personConditions[index],
             description: 'teste',
           ),

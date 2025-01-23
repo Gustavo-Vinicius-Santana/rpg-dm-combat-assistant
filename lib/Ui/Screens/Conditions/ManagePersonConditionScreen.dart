@@ -6,14 +6,16 @@ import 'package:rpg_dm_combat_assistant/Ui/Components/Buttons/ButtonAction.dart'
 import 'package:rpg_dm_combat_assistant/Ui/Components/Lists/ListConditionsSelectOrDelete.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Loadings/Loading.dart';
 
-class PersonConditionScreen extends StatefulWidget {
-  const PersonConditionScreen({super.key});
+class ManagePersonConditionScreen extends StatefulWidget {
+  const ManagePersonConditionScreen({super.key});
 
   @override
-  State<PersonConditionScreen> createState() => _PersonConditionScreenState();
+  State<ManagePersonConditionScreen> createState() =>
+      _ManagePersonConditionScreenState();
 }
 
-class _PersonConditionScreenState extends State<PersonConditionScreen> {
+class _ManagePersonConditionScreenState
+    extends State<ManagePersonConditionScreen> {
   final MonsterInCombatRepository monster_repository =
       MonsterInCombatRepository();
   final CharacterInCombatRepository character_repository =
@@ -134,63 +136,57 @@ class _PersonConditionScreenState extends State<PersonConditionScreen> {
     print('condições selecionadas: $idsConditionsSelectedToAdd');
   }
 
-  void _addCondition(int id) async {
+  void _manageConditions(int id) async {
     print('Editar teste');
 
-    if (idsConditionsSelectedToAdd.isEmpty) {
-      print('Nenhuma condição selecionada');
-    }
+    print('Condições selecionadas: $idsConditionsSelectedToAdd');
 
-    if (idsConditionsSelectedToAdd.isNotEmpty) {
-      print('Condições selecionadas: $idsConditionsSelectedToAdd');
+    try {
+      for (final idCondition in idsConditionsSelectedToAdd) {
+        final condition =
+            await conditions_repository.getConditionById(idCondition);
 
-      try {
-        for (final idCondition in idsConditionsSelectedToAdd) {
-          final condition =
-              await conditions_repository.getConditionById(idCondition);
-
-          conditionsSelectedToAdd.add(condition[0]['name_id']);
-        }
-
-        final condition_1 = conditionsSelectedToAdd.length > 0
-            ? conditionsSelectedToAdd[0]
-            : null;
-        final condition_2 = conditionsSelectedToAdd.length > 1
-            ? conditionsSelectedToAdd[1]
-            : null;
-        final condition_3 = conditionsSelectedToAdd.length > 2
-            ? conditionsSelectedToAdd[2]
-            : null;
-        final condition_4 = conditionsSelectedToAdd.length > 3
-            ? conditionsSelectedToAdd[3]
-            : null;
-
-        Map<String, dynamic> personEdited = {
-          'condition_1': condition_1,
-          'condition_2': condition_2,
-          'condition_3': condition_3,
-          'condition_4': condition_4,
-        };
-
-        if (type == 'character') {
-          await character_repository.updateCharacterInCombat(id, personEdited);
-        }
-
-        if (type == 'monster') {
-          await monster_repository.updateMonsterInCombat(id, personEdited);
-        }
-
-        Navigator.pushNamed(
-          context,
-          '/combatScreen',
-          arguments: {
-            'id': id,
-            'openModal': [id, type],
-          },
-        );
-      } catch (e) {
-        print('Erro ao editar o personagem: $e');
+        conditionsSelectedToAdd.add(condition[0]['name_id']);
       }
+
+      final condition_1 = conditionsSelectedToAdd.length > 0
+          ? conditionsSelectedToAdd[0]
+          : null;
+      final condition_2 = conditionsSelectedToAdd.length > 1
+          ? conditionsSelectedToAdd[1]
+          : null;
+      final condition_3 = conditionsSelectedToAdd.length > 2
+          ? conditionsSelectedToAdd[2]
+          : null;
+      final condition_4 = conditionsSelectedToAdd.length > 3
+          ? conditionsSelectedToAdd[3]
+          : null;
+
+      Map<String, dynamic> personEdited = {
+        'condition_1': condition_1,
+        'condition_2': condition_2,
+        'condition_3': condition_3,
+        'condition_4': condition_4,
+      };
+
+      if (type == 'character') {
+        await character_repository.updateCharacterInCombat(id, personEdited);
+      }
+
+      if (type == 'monster') {
+        await monster_repository.updateMonsterInCombat(id, personEdited);
+      }
+
+      Navigator.pushNamed(
+        context,
+        '/combatScreen',
+        arguments: {
+          'id': id,
+          'openModal': [id, type],
+        },
+      );
+    } catch (e) {
+      print('Erro ao editar o personagem: $e');
     }
   }
 
@@ -210,7 +206,7 @@ class _PersonConditionScreenState extends State<PersonConditionScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Adicionar Condições'),
+          title: const Text('Gerenciar Condições'),
         ),
         body: isLoading
             ? const Center(
@@ -223,9 +219,9 @@ class _PersonConditionScreenState extends State<PersonConditionScreen> {
                       onPressed: () {
                         print('Adicionar condição');
 
-                        _addCondition(id!);
+                        _manageConditions(id!);
                       },
-                      textInButton: 'Adicionar condição',
+                      textInButton: 'Gerenciar condições',
                       fontSize: 18,
                       width: 375,
                       height: 50,

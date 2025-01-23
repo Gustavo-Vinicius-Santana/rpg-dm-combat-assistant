@@ -4,7 +4,7 @@ import 'package:rpg_dm_combat_assistant/Ui/Screens/Character/CharacterRegister.d
 import 'package:rpg_dm_combat_assistant/Ui/Screens/Combat/CombatEditScreen.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Screens/Combat/CombatRegister.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Screens/Combat/CombatScreen.dart';
-import 'package:rpg_dm_combat_assistant/Ui/Screens/Conditions/AddConditionScreen.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Screens/Conditions/ManagePersonConditionScreen.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Screens/Monster/MonsterEditScreen.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Screens/Monster/MonsterRegister.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Screens/MyHomePage.dart';
@@ -41,7 +41,8 @@ class MyApp extends StatelessWidget {
         '/combatRegister': (context) => CombatRegister(),
 
         //ROTAS CONDITIONS
-        '/addConditionScreen': (context) => PersonConditionScreen(),
+        '/managePersonConditionScreen': (context) =>
+            ManagePersonConditionScreen(),
       },
     );
   }

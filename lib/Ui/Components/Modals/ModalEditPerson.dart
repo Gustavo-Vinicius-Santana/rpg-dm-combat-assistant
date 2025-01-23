@@ -4,7 +4,7 @@ import 'package:rpg_dm_combat_assistant/Data/repositories/monster_in_combat_repo
 import 'package:rpg_dm_combat_assistant/Ui/Components/Buttons/ButtonAction.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Input/InputNumberInt.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Input/InputText.dart';
-import 'package:rpg_dm_combat_assistant/Ui/Components/Lists/ListConditionsEditOrDelete.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Components/Lists/ListSimpleConditions.dart';
 
 class ModalEditPerson extends StatefulWidget {
   const ModalEditPerson({
@@ -216,12 +216,12 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
     }
   }
 
-  void _goToConditions() {
+  void _goToManegePersonConditions() {
     print("Ir para tela de adicionar condições");
 
     Navigator.pushNamed(
       context,
-      '/addConditionScreen',
+      '/managePersonConditionScreen',
       arguments: {
         'id': widget.personId,
         'type': widget.personType,
@@ -335,9 +335,9 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
                       width: 180,
                       height: 30,
                       onPressed: () {
-                        _goToConditions();
+                        _goToManegePersonConditions();
                       },
-                      textInButton: 'Adicionar condições',
+                      textInButton: 'Gerenciar condições',
                     ),
                   ],
                 ),
@@ -348,8 +348,8 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
                     Container(
                       width: 275,
                       height: 200,
-                      child: ListConditionsEditOrDelete(
-                          personConditions: _conditions),
+                      child:
+                          ListSimpleConditions(personConditions: _conditions),
                     ),
                   ],
                 ),
