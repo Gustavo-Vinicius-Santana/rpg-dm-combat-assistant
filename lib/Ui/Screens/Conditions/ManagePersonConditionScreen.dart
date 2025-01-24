@@ -195,7 +195,9 @@ class _ManagePersonConditionScreenState
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return ModalCreateCondition();
+        return ModalCreateCondition(
+          personId: id!,
+        );
       },
     );
   }

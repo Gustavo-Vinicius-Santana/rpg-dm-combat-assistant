@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:rpg_dm_combat_assistant/Data/repositories/conditions_repository.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Input/InputText.dart';
 
 class ModalCreateCondition extends StatefulWidget {
-  const ModalCreateCondition({super.key});
+  const ModalCreateCondition({super.key, required this.personId});
+  final int personId;
 
   @override
   State<ModalCreateCondition> createState() => _ModalCreateConditionState();
 }
 
 class _ModalCreateConditionState extends State<ModalCreateCondition> {
+  ConditionsRepository conditions_repository = ConditionsRepository();
+
   final _nameConditionController = TextEditingController();
   final _descriptionConditionController = TextEditingController();
 
@@ -59,6 +63,27 @@ class _ModalCreateConditionState extends State<ModalCreateCondition> {
       });
     } else {
       print('criando condição');
+
+      List<Map<String, dynamic>> conditions =
+          await conditions_repository.getAllConditions();
+
+      for (final condition in conditions) {
+        if (condition['name_id'] == name) {
+          setState(() {
+            _nameConditionError = 'Condição ja cadastrada';
+          });
+          return;
+        }
+      }
+
+      var newCondition = {
+        'name_id': name,
+        'description': description,
+      };
+
+      await conditions_repository.insertCondition(newCondition);
+
+      Navigator.of(context).pop();
     }
   }
 
