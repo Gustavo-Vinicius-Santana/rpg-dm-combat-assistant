@@ -6,6 +6,7 @@ import 'package:rpg_dm_combat_assistant/Ui/Components/Buttons/ButtonAction.dart'
 import 'package:rpg_dm_combat_assistant/Ui/Components/Lists/ListConditionsSelectOrDelete.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Loadings/Loading.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Modals/ModalCreateCondition.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Components/Modals/ModalEditCondition.dart';
 
 class ManagePersonConditionScreen extends StatefulWidget {
   const ManagePersonConditionScreen({super.key});
@@ -202,6 +203,17 @@ class _ManagePersonConditionScreenState
     );
   }
 
+  void _openModalEditCondition(int id) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ModalEditCondition(
+          idCondition: id,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -245,6 +257,7 @@ class _ManagePersonConditionScreenState
                       child: ListConditionsSelectOrDelete(
                         conditionsList: _mapConditions,
                         idsSelected: idsConditionsSelectedToAdd,
+                        onTapOpenModal: _openModalEditCondition,
                       ),
                     ),
                     const SizedBox(height: 40),
