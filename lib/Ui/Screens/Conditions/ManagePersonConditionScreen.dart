@@ -5,6 +5,7 @@ import 'package:rpg_dm_combat_assistant/Data/repositories/monster_in_combat_repo
 import 'package:rpg_dm_combat_assistant/Ui/Components/Buttons/ButtonAction.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Lists/ListConditionsSelectOrDelete.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Loadings/Loading.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Components/Modals/ModalCreateCondition.dart';
 
 class ManagePersonConditionScreen extends StatefulWidget {
   const ManagePersonConditionScreen({super.key});
@@ -190,6 +191,15 @@ class _ManagePersonConditionScreenState
     }
   }
 
+  void _openModalCreateCondition() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ModalCreateCondition();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -234,7 +244,19 @@ class _ManagePersonConditionScreenState
                         conditionsList: _mapConditions,
                         idsSelected: idsConditionsSelectedToAdd,
                       ),
-                    )
+                    ),
+                    const SizedBox(height: 40),
+                    ButtonAction(
+                      onPressed: () {
+                        print('criar condição');
+
+                        _openModalCreateCondition();
+                      },
+                      textInButton: 'Criar condição',
+                      fontSize: 18,
+                      width: 200,
+                      height: 50,
+                    ),
                   ],
                 ),
               ),
