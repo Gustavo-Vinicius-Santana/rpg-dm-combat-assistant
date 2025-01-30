@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:rpg_dm_combat_assistant/Data/repositories/Character_conditions_repository.dart';
+import 'package:rpg_dm_combat_assistant/Data/repositories/Monster_conditions_repository.dart';
 import 'package:rpg_dm_combat_assistant/Data/repositories/character_in_combat_repository.dart';
 import 'package:rpg_dm_combat_assistant/Data/repositories/conditions_repository.dart';
 import 'package:rpg_dm_combat_assistant/Data/repositories/monster_in_combat_repository.dart';
@@ -24,11 +26,18 @@ class _ManagePersonConditionScreenState
       CharacterInCombatRepository();
 
   final ConditionsRepository conditions_repository = ConditionsRepository();
+  final CharacterConditionsRepository character_conditions_repository =
+      CharacterConditionsRepository();
+  final MonsterConditionsRepository monster_conditions_repository =
+      MonsterConditionsRepository();
 
   List<Map<String, dynamic>> _mapConditions = [];
   List<int> idsConditionsSelectedToAdd = [];
+
+  // CONDIÇÕES SELECIONADAS -> NOVAS
   List<String> conditionsSelectedToAdd = [];
 
+  // CONDIÇÕES DO PERSONAGEM -> ANTIGAS
   List? listPersonConditions;
 
   int? id;
@@ -106,21 +115,19 @@ class _ManagePersonConditionScreenState
 
       if (type == 'character') {
         dataConditionPerson =
-            await character_repository.getCharacterConditions(id);
-      } else if (type == 'monster') {
-        dataConditionPerson = await monster_repository.getMonsterConditions(id);
+            await character_conditions_repository.getCharacterConditions(id);
+      }
+
+      if (type == 'monster') {
+        dataConditionPerson =
+            await monster_conditions_repository.getMonsterConditions(id);
       }
 
       if (dataConditionPerson != null && dataConditionPerson.isNotEmpty) {
-        final conditions = [
-          dataConditionPerson[0]['condition_1'],
-          dataConditionPerson[0]['condition_2'],
-          dataConditionPerson[0]['condition_3'],
-          dataConditionPerson[0]['condition_4'],
-        ].where((condition) => condition != null).toList();
+        final conditions = dataConditionPerson.map((e) => e['name_id']);
 
         setState(() {
-          listPersonConditions = conditions.cast<String>();
+          listPersonConditions = conditions.toList();
         });
 
         for (final condition in listPersonConditions!) {
@@ -144,39 +151,32 @@ class _ManagePersonConditionScreenState
     print('Condições selecionadas: $idsConditionsSelectedToAdd');
 
     try {
-      for (final idCondition in idsConditionsSelectedToAdd) {
-        final condition =
-            await conditions_repository.getConditionById(idCondition);
-
-        conditionsSelectedToAdd.add(condition[0]['name_id']);
-      }
-
-      final condition_1 = conditionsSelectedToAdd.length > 0
-          ? conditionsSelectedToAdd[0]
-          : null;
-      final condition_2 = conditionsSelectedToAdd.length > 1
-          ? conditionsSelectedToAdd[1]
-          : null;
-      final condition_3 = conditionsSelectedToAdd.length > 2
-          ? conditionsSelectedToAdd[2]
-          : null;
-      final condition_4 = conditionsSelectedToAdd.length > 3
-          ? conditionsSelectedToAdd[3]
-          : null;
-
-      Map<String, dynamic> personEdited = {
-        'condition_1': condition_1,
-        'condition_2': condition_2,
-        'condition_3': condition_3,
-        'condition_4': condition_4,
-      };
-
       if (type == 'character') {
-        await character_repository.updateCharacterInCombat(id, personEdited);
+        await character_conditions_repository.deleteAllCharacterCondition(id);
+
+        for (final condition_id in idsConditionsSelectedToAdd) {
+          Map<String, dynamic> personEdited = {
+            'character_participant_id': id,
+            'condition_id': condition_id
+          };
+
+          await character_conditions_repository
+              .insertCharacterCondition(personEdited);
+        }
       }
 
       if (type == 'monster') {
-        await monster_repository.updateMonsterInCombat(id, personEdited);
+        await monster_conditions_repository.deleteAllMonsterCondition(id);
+
+        for (final condition_id in idsConditionsSelectedToAdd) {
+          Map<String, dynamic> personEdited = {
+            'monster_participant_id': id,
+            'condition_id': condition_id
+          };
+
+          await monster_conditions_repository
+              .insertMonsterCondition(personEdited);
+        }
       }
 
       Navigator.pushNamed(

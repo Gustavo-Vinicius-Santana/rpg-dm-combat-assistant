@@ -28,19 +28,11 @@ class _ListCombatState extends State<ListCombat> {
 
           final person = widget.personsInCombat[index];
           final isActive = index == widget.actualTurn;
+
           print('--------------------------------------');
           print('turno do personagem ${person['name']}: $isActive $index');
           print('tamanho da lista: ${widget.personsInCombat.length}');
           print('turno atual: ${widget.actualTurn}');
-
-          final List conditions = [
-            person['condition_1'],
-            person['condition_2'],
-            person['condition_3'],
-            person['condition_4']
-          ].where((condition) => condition != null).toList();
-
-          print('CONDIÇÕES DO PERSONAGEM ${person['name']}: $conditions');
 
           return CardPersonInCombat(
             infoOpenModal: widget.idOpenModal,
@@ -54,7 +46,6 @@ class _ListCombatState extends State<ListCombat> {
             lifeActual: person['lifeActual'],
             type: person['type'],
             iniciative: person['iniciative'],
-            conditions: conditions,
           );
         },
       ),

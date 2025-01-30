@@ -3,7 +3,7 @@ import 'package:rpg_dm_combat_assistant/Ui/Components/Cards/CardSimpleCondition%
 
 class ListSimpleConditions extends StatefulWidget {
   const ListSimpleConditions({super.key, required this.personConditions});
-  final List personConditions;
+  final List<Map<String, dynamic>> personConditions;
 
   @override
   State<ListSimpleConditions> createState() => _ListSimpleConditionsState();
@@ -18,8 +18,8 @@ class _ListSimpleConditionsState extends State<ListSimpleConditions> {
       itemBuilder: (context, index) {
         return Column(children: [
           CardSimpleCondition(
-            name: widget.personConditions[index],
-            description: 'teste',
+            name: widget.personConditions[index]['name_id'],
+            description: widget.personConditions[index]['description'],
           ),
         ]);
       },

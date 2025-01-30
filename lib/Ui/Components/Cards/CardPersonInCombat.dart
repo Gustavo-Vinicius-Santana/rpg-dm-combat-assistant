@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:rpg_dm_combat_assistant/Data/repositories/Character_conditions_repository.dart';
+import 'package:rpg_dm_combat_assistant/Data/repositories/Monster_conditions_repository.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Icons/IconsSvg.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Modals/ModalEditPerson.dart';
 
@@ -12,7 +14,6 @@ class CardPersonInCombat extends StatefulWidget {
       required this.lifeActual,
       required this.type,
       required this.iniciative,
-      required this.conditions,
       required this.id,
       required this.combatId,
       required this.isTurn,
@@ -26,7 +27,6 @@ class CardPersonInCombat extends StatefulWidget {
   final String armor;
   final int lifeMax;
   final int lifeActual;
-  final List conditions;
 
   final bool isTurn;
 
@@ -37,9 +37,36 @@ class CardPersonInCombat extends StatefulWidget {
 }
 
 class _CardPersonInCombatState extends State<CardPersonInCombat> {
+  final CharacterConditionsRepository character_conditions_repository =
+      CharacterConditionsRepository();
+  final MonsterConditionsRepository monster_conditions_repository =
+      MonsterConditionsRepository();
+
+  List<String> _conditions = [];
+
+  void _loadConditions(type, idPerson) async {
+    if (type == 'character') {
+      final conditionData = await character_conditions_repository
+          .getCharacterConditions(idPerson);
+      setState(() {
+        _conditions = conditionData.map((e) => e['name_id'] as String).toList();
+      });
+    }
+
+    if (type == 'monster') {
+      final conditionData =
+          await monster_conditions_repository.getMonsterConditions(idPerson);
+      setState(() {
+        _conditions = conditionData.map((e) => e['name_id'] as String).toList();
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+
+    _loadConditions(widget.type, widget.id);
 
     if (widget.infoOpenModal != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -178,8 +205,8 @@ class _CardPersonInCombatState extends State<CardPersonInCombat> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (widget.conditions.isNotEmpty) ...[
-                    for (var condition in widget.conditions)
+                  if (_conditions.isNotEmpty) ...[
+                    for (var condition in _conditions)
                       Container(
                         margin: const EdgeInsets.only(right: 8),
                         padding: const EdgeInsets.symmetric(

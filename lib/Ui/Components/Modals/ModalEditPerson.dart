@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:rpg_dm_combat_assistant/Data/repositories/Character_conditions_repository.dart';
+import 'package:rpg_dm_combat_assistant/Data/repositories/Monster_conditions_repository.dart';
 import 'package:rpg_dm_combat_assistant/Data/repositories/character_in_combat_repository.dart';
 import 'package:rpg_dm_combat_assistant/Data/repositories/monster_in_combat_repository.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Buttons/ButtonAction.dart';
@@ -24,6 +26,10 @@ class ModalEditPerson extends StatefulWidget {
 class _ModalEditPersonState extends State<ModalEditPerson> {
   final MonsterInCombatRepository monster_repository =
       MonsterInCombatRepository();
+  final CharacterConditionsRepository character_conditions_repository =
+      CharacterConditionsRepository();
+  final MonsterConditionsRepository monster_conditions_repository =
+      MonsterConditionsRepository();
 
   final CharacterInCombatRepository character_repository =
       CharacterInCombatRepository();
@@ -40,7 +46,7 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
   String? _messageErrorMaxHealth;
   String? _messageErrorMinHealth;
 
-  List _conditions = [];
+  List<Map<String, dynamic>> _conditions = [];
 
   @override
   void initState() {
@@ -65,40 +71,58 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
     });
   }
 
+  void _loadPersonCondition(type, id) async {
+    if (type == 'character') {
+      final conditions =
+          await character_conditions_repository.getCharacterConditions(id);
+
+      print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+      print(conditions);
+
+      setState(() {
+        _conditions = conditions;
+      });
+    }
+
+    if (type == 'monster') {
+      final conditions =
+          await monster_conditions_repository.getMonsterConditions(id);
+
+      print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+      print(conditions);
+
+      setState(() {
+        _conditions = conditions;
+      });
+    }
+  }
+
   void _loadPerson(personId) async {
     print("Carregando personagem de ID: $personId");
     try {
       if (widget.personType == 'character') {
         final character =
             await character_repository.getCharacterInCombatById(personId);
+
+        _loadPersonCondition('character', personId);
         setState(() {
           _namePersonController.text = character[0]['name'];
           _iniciativeController.text = character[0]['iniciative'].toString();
           _armorController.text = character[0]['armor'];
           _maxHealthController.text = character[0]['lifeMax'].toString();
           _minHealthController.text = character[0]['lifeActual'].toString();
-          _conditions = [
-            character[0]['condition_1'],
-            character[0]['condition_2'],
-            character[0]['condition_3'],
-            character[0]['condition_4']
-          ].where((condition) => condition != null).toList();
         });
       } else if (widget.personType == 'monster') {
         final monster =
             await monster_repository.getMonsterInCombatById(personId);
+
+        _loadPersonCondition('monster', personId);
         setState(() {
           _namePersonController.text = monster[0]['name'];
           _iniciativeController.text = monster[0]['iniciative'].toString();
           _armorController.text = monster[0]['armor'];
           _maxHealthController.text = monster[0]['lifeMax'].toString();
           _minHealthController.text = monster[0]['lifeActual'].toString();
-          _conditions = [
-            monster[0]['condition_1'],
-            monster[0]['condition_2'],
-            monster[0]['condition_3'],
-            monster[0]['condition_4']
-          ].where((condition) => condition != null).toList();
         });
       }
     } catch (e) {

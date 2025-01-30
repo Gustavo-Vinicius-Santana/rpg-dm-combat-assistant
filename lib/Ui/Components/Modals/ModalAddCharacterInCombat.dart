@@ -59,10 +59,6 @@ class _ModalAddCharacterInCombatState extends State<ModalAddCharacterInCombat> {
             'armor': character['armor'],
             'lifeMax': character['lifeMax'],
             'lifeActual': character['lifeActual'],
-            'condition_1': character['condition_1'],
-            'condition_2': character['condition_2'],
-            'condition_3': character['condition_3'],
-            'condition_4': character['condition_4'],
           };
 
           // Insere os dados no banco de dados
