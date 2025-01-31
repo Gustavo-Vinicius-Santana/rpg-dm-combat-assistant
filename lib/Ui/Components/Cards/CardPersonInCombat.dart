@@ -202,31 +202,32 @@ class _CardPersonInCombatState extends State<CardPersonInCombat> {
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (_conditions.isNotEmpty) ...[
-                    for (var condition in _conditions)
-                      Container(
-                        margin: const EdgeInsets.only(right: 8),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(8),
+              Wrap(
+                spacing: 8, // Espaço horizontal entre os itens
+                runSpacing: 8, // Espaço vertical entre as linhas
+                alignment: WrapAlignment.center, // Centraliza os itens na linha
+                children: _conditions.isNotEmpty
+                    ? _conditions.map((condition) {
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            condition,
+                            style: const TextStyle(fontSize: 12),
+                          ),
+                        );
+                      }).toList()
+                    : [
+                        const Text(
+                          "Não há condições",
+                          style: TextStyle(fontSize: 12, color: Colors.grey),
                         ),
-                        child: Text(
-                          condition,
-                          style: const TextStyle(fontSize: 12),
-                        ),
-                      ),
-                  ] else
-                    const Text(
-                      "Não há condições",
-                      style: TextStyle(fontSize: 12, color: Colors.grey),
-                    ),
-                ],
-              ),
+                      ],
+              )
             ],
           )
         ]),
