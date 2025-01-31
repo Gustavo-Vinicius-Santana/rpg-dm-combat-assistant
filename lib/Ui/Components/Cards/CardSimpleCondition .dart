@@ -29,9 +29,11 @@ class _CardSimpleConditionState extends State<CardSimpleCondition> {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  '${widget.description}',
-                  style: const TextStyle(color: Colors.grey),
+                Expanded(
+                  child: Text(
+                    '${widget.description}',
+                    style: const TextStyle(color: Colors.grey),
+                  ),
                 ),
               ],
             ),
