@@ -36,8 +36,8 @@ class DB {
     await db.execute(_monstersConditionsTable);
     await db.execute(_charactersConditionsTable);
 
-    // INSERT DATA TEST
-    await innitialInsert(db);
+    // INSERT DATA TEST (APENAS NAS VERSÕES DE DESENVOLVIMENTO)
+    // await innitialInsert(db);
   }
 
   Future<void> innitialInsert(Database db) async {
