@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:rpg_dm_combat_assistant/Data/repositories/Character_conditions_repository.dart';
+import 'package:rpg_dm_combat_assistant/Data/repositories/Monster_conditions_repository.dart';
 import 'package:rpg_dm_combat_assistant/Data/repositories/character_in_combat_repository.dart';
 import 'package:rpg_dm_combat_assistant/Data/repositories/monster_in_combat_repository.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Buttons/ButtonAction.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Input/InputNumberInt.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Input/InputText.dart';
+import 'package:rpg_dm_combat_assistant/Ui/Components/Lists/ListSimpleConditions.dart';
 
 class ModalEditPerson extends StatefulWidget {
   const ModalEditPerson({
     super.key,
-    required this.personName,
-    required this.personIniciative,
-    required this.personLifeMax,
-    required this.personLifeActual,
-    required this.personArmor,
-    required this.personConditions,
     required this.personId,
     required this.personType,
     required this.combatId,
@@ -21,12 +18,6 @@ class ModalEditPerson extends StatefulWidget {
   final int personId;
   final int combatId;
   final String personType;
-  final String personName;
-  final int personIniciative;
-  final int personLifeMax;
-  final int personLifeActual;
-  final String personArmor;
-  final List personConditions;
 
   @override
   _ModalEditPersonState createState() => _ModalEditPersonState();
@@ -35,6 +26,10 @@ class ModalEditPerson extends StatefulWidget {
 class _ModalEditPersonState extends State<ModalEditPerson> {
   final MonsterInCombatRepository monster_repository =
       MonsterInCombatRepository();
+  final CharacterConditionsRepository character_conditions_repository =
+      CharacterConditionsRepository();
+  final MonsterConditionsRepository monster_conditions_repository =
+      MonsterConditionsRepository();
 
   final CharacterInCombatRepository character_repository =
       CharacterInCombatRepository();
@@ -51,16 +46,12 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
   String? _messageErrorMaxHealth;
   String? _messageErrorMinHealth;
 
+  List<Map<String, dynamic>> _conditions = [];
+
   @override
   void initState() {
     super.initState();
-
-    // Inicializar os controladores com os valores iniciais
-    _namePersonController.text = widget.personName;
-    _iniciativeController.text = widget.personIniciative.toString();
-    _armorController.text = widget.personArmor;
-    _maxHealthController.text = widget.personLifeMax.toString();
-    _minHealthController.text = widget.personLifeActual.toString();
+    _loadPerson(widget.personId);
 
     // Adicionar listeners aos controladores
     _namePersonController.addListener(() {
@@ -78,6 +69,65 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
     _minHealthController.addListener(() {
       _clearErrorMessage(_messageErrorMinHealth);
     });
+  }
+
+  void _loadPersonCondition(type, id) async {
+    if (type == 'character') {
+      final conditions =
+          await character_conditions_repository.getCharacterConditions(id);
+
+      print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+      print(conditions);
+
+      setState(() {
+        _conditions = conditions;
+      });
+    }
+
+    if (type == 'monster') {
+      final conditions =
+          await monster_conditions_repository.getMonsterConditions(id);
+
+      print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+      print(conditions);
+
+      setState(() {
+        _conditions = conditions;
+      });
+    }
+  }
+
+  void _loadPerson(personId) async {
+    print("Carregando personagem de ID: $personId");
+    try {
+      if (widget.personType == 'character') {
+        final character =
+            await character_repository.getCharacterInCombatById(personId);
+
+        _loadPersonCondition('character', personId);
+        setState(() {
+          _namePersonController.text = character[0]['name'];
+          _iniciativeController.text = character[0]['iniciative'].toString();
+          _armorController.text = character[0]['armor'];
+          _maxHealthController.text = character[0]['lifeMax'].toString();
+          _minHealthController.text = character[0]['lifeActual'].toString();
+        });
+      } else if (widget.personType == 'monster') {
+        final monster =
+            await monster_repository.getMonsterInCombatById(personId);
+
+        _loadPersonCondition('monster', personId);
+        setState(() {
+          _namePersonController.text = monster[0]['name'];
+          _iniciativeController.text = monster[0]['iniciative'].toString();
+          _armorController.text = monster[0]['armor'];
+          _maxHealthController.text = monster[0]['lifeMax'].toString();
+          _minHealthController.text = monster[0]['lifeActual'].toString();
+        });
+      }
+    } catch (e) {
+      print('Erro ao carregar o personagem: $e');
+    }
   }
 
   void _clearErrorMessage(String? errorMessage) {
@@ -190,6 +240,20 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
     }
   }
 
+  void _goToManegePersonConditions() {
+    print("Ir para tela de adicionar condições");
+
+    Navigator.pushNamed(
+      context,
+      '/managePersonConditionScreen',
+      arguments: {
+        'combatId': widget.combatId,
+        'id': widget.personId,
+        'type': widget.personType,
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -291,55 +355,29 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    if (widget.personConditions.isNotEmpty) ...[
-                      for (var condition in widget.personConditions)
-                        Container(
-                          margin: const EdgeInsets.only(right: 8),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            condition,
-                            style: const TextStyle(fontSize: 12),
-                          ),
-                        ),
-                    ] else
-                      const Text(
-                        "Não há condições",
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
-                      ),
+                    ButtonAction(
+                      fontSize: 14,
+                      width: 180,
+                      height: 30,
+                      onPressed: () {
+                        _goToManegePersonConditions();
+                      },
+                      textInButton: 'Gerenciar condições',
+                    ),
                   ],
                 ),
+                const SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    if (widget.personConditions.length >= 4)
-                      ButtonAction(
-                        onPressed: () {
-                          print('remover condição');
-                        },
-                        textInButton: 'remover',
-                      ),
-                    if (widget.personConditions.length < 4) ...[
-                      ButtonAction(
-                        onPressed: () {
-                          print('adicionar condição');
-                        },
-                        textInButton: 'adicionar',
-                      ),
-                      if (widget.personConditions.isNotEmpty)
-                        ButtonAction(
-                          onPressed: () {
-                            print('remover condição');
-                          },
-                          textInButton: 'remover condição',
-                        ),
-                    ],
+                    Container(
+                      width: 275,
+                      height: 200,
+                      child:
+                          ListSimpleConditions(personConditions: _conditions),
+                    ),
                   ],
-                )
+                ),
               ],
             ),
             const SizedBox(height: 16),

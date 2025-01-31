@@ -33,9 +33,11 @@ class DB {
     await db.execute(_charactersParticipantsTable);
 
     await db.execute(_conditionsTable);
+    await db.execute(_monstersConditionsTable);
+    await db.execute(_charactersConditionsTable);
 
     // INSERT DATA TEST
-    // await innitialInsert(db);
+    await innitialInsert(db);
   }
 
   Future<void> innitialInsert(Database db) async {
@@ -143,8 +145,6 @@ class DB {
       'armor': '14',
       'lifeMax': 30,
       'lifeActual': 30,
-      'condition_1': 'fallen',
-      'condition_2': 'poisoned',
     });
 
     await db.insert('monsters_participants', {
@@ -156,10 +156,6 @@ class DB {
       'armor': '16',
       'lifeMax': 60,
       'lifeActual': 60,
-      'condition_1': 'bleeding',
-      'condition_2': 'poisoned',
-      'condition_3': 'raged',
-      'condition_4': 'confused',
     });
     // --------------------------------------------------------
 
@@ -186,6 +182,65 @@ class DB {
       'armor': '16',
       'lifeMax': 70,
       'lifeActual': 70,
+    });
+
+    await db.insert('conditions', {
+      'name_id': 'fallen',
+      'description': 'The character is falling.',
+    });
+
+    await db.insert('conditions', {
+      'name_id': 'poisoned',
+      'description': 'The character is poisoned.',
+    });
+
+    await db.insert('conditions', {
+      'name_id': 'bleeding',
+      'description': 'The character is bleeding.',
+    });
+
+    await db.insert('conditions', {
+      'name_id': 'raged',
+      'description': 'The character is raging.',
+    });
+
+    //--------------------------------------------------------
+
+    // Inserir condições nos personagens
+    await db.insert('characters_conditions', {
+      'character_participant_id': 1,
+      'condition_id': 1,
+    });
+
+    await db.insert('characters_conditions', {
+      'character_participant_id': 2,
+      'condition_id': 2,
+    });
+
+    // Inserir condições nos monstros
+    await db.insert('monsters_conditions', {
+      'monster_participant_id': 1,
+      'condition_id': 1,
+    });
+
+    await db.insert('monsters_conditions', {
+      'monster_participant_id': 1,
+      'condition_id': 2,
+    });
+
+    await db.insert('monsters_conditions', {
+      'monster_participant_id': 2,
+      'condition_id': 3,
+    });
+
+    await db.insert('monsters_conditions', {
+      'monster_participant_id': 2,
+      'condition_id': 2,
+    });
+
+    await db.insert('monsters_conditions', {
+      'monster_participant_id': 2,
+      'condition_id': 4,
     });
   }
 
@@ -250,10 +305,6 @@ class DB {
       armor TEXT NOT NULL,
       lifeMax INTEGER NOT NULL,
       lifeActual INTEGER NOT NULL,
-      condition_1 TEXT,
-      condition_2 TEXT,
-      condition_3 TEXT,
-      condition_4 TEXT,
       FOREIGN KEY (combat_id) REFERENCES combats(id),
       FOREIGN KEY (monster_id) REFERENCES monsters(id)
     );
@@ -271,10 +322,6 @@ class DB {
       armor TEXT NOT NULL,
       lifeMax INTEGER NOT NULL,
       lifeActual INTEGER NOT NULL,
-      condition_1 TEXT,
-      condition_2 TEXT,
-      condition_3 TEXT,
-      condition_4 TEXT,
       FOREIGN KEY (combat_id) REFERENCES combats(id),
       FOREIGN KEY (character_id) REFERENCES characters(id)
     );
@@ -283,8 +330,28 @@ class DB {
   static const String _conditionsTable = '''
     CREATE TABLE conditions(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name_id TEXT NOT NULL
-      
+      name_id TEXT NOT NULL,
+      description TEXT
     )
+  ''';
+
+  static const String _charactersConditionsTable = '''
+  CREATE TABLE characters_conditions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    character_participant_id INTEGER NOT NULL,
+    condition_id INTEGER NOT NULL,
+    FOREIGN KEY (character_participant_id) REFERENCES characters_participants(id),
+    FOREIGN KEY (condition_id) REFERENCES conditions(id) ON DELETE CASCADE
+  )
+  ''';
+
+  static const String _monstersConditionsTable = '''
+  CREATE TABLE monsters_conditions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    monster_participant_id INTEGER NOT NULL,
+    condition_id INTEGER NOT NULL,
+    FOREIGN KEY (monster_participant_id) REFERENCES monsters_participants(id),
+    FOREIGN KEY (condition_id) REFERENCES conditions(id) ON DELETE CASCADE
+  )
   ''';
 }

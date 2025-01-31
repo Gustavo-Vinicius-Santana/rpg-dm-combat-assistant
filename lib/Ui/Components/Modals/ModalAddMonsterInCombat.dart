@@ -58,10 +58,6 @@ class _ModalAddMonsterInCombatState extends State<ModalAddMonsterInCombat> {
             'armor': monster['armor'],
             'lifeMax': monster['lifeMax'],
             'lifeActual': monster['lifeActual'],
-            'condition_1': monster['condition_1'],
-            'condition_2': monster['condition_2'],
-            'condition_3': monster['condition_3'],
-            'condition_4': monster['condition_4'],
           };
 
           // Insere os dados no banco de dados
