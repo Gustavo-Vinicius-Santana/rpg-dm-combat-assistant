@@ -247,6 +247,7 @@ class _ModalEditPersonState extends State<ModalEditPerson> {
       context,
       '/managePersonConditionScreen',
       arguments: {
+        'combatId': widget.combatId,
         'id': widget.personId,
         'type': widget.personType,
       },

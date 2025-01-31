@@ -43,6 +43,7 @@ class _ManagePersonConditionScreenState
   int? id;
   String? type;
 
+  int? combatId;
   bool isLoading = true;
 
   @override
@@ -51,6 +52,7 @@ class _ManagePersonConditionScreenState
     final arguments = ModalRoute.of(context)?.settings.arguments;
 
     if (arguments is Map<String, dynamic>) {
+      combatId = arguments['combatId'];
       id = arguments['id'];
       type = arguments['type'];
 
@@ -183,7 +185,7 @@ class _ManagePersonConditionScreenState
         context,
         '/combatScreen',
         arguments: {
-          'id': id,
+          'id': combatId,
           'openModal': [id, type],
         },
       );
@@ -222,7 +224,7 @@ class _ManagePersonConditionScreenState
           context,
           '/combatScreen',
           arguments: {
-            'id': id,
+            'id': combatId,
             'openModal': [id, type],
           },
         );
