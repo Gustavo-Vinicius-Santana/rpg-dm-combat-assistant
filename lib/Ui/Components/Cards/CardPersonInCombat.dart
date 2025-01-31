@@ -223,7 +223,7 @@ class _CardPersonInCombatState extends State<CardPersonInCombat> {
                       }).toList()
                     : [
                         const Text(
-                          "Não há condições",
+                          "Não há condições do personagem",
                           style: TextStyle(fontSize: 12, color: Colors.grey),
                         ),
                       ],

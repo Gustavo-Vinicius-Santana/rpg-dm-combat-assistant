@@ -12,16 +12,27 @@ class ListSimpleConditions extends StatefulWidget {
 class _ListSimpleConditionsState extends State<ListSimpleConditions> {
   @override
   Widget build(BuildContext context) {
+    if (widget.personConditions.isEmpty) {
+      return const Center(
+        child: Text(
+          "Não há condições do personagem",
+          style: TextStyle(fontSize: 16, color: Colors.grey),
+        ),
+      );
+    }
+
     return ListView.builder(
       padding: EdgeInsets.zero,
       itemCount: widget.personConditions.length,
       itemBuilder: (context, index) {
-        return Column(children: [
-          CardSimpleCondition(
-            name: widget.personConditions[index]['name_id'],
-            description: widget.personConditions[index]['description'],
-          ),
-        ]);
+        return Column(
+          children: [
+            CardSimpleCondition(
+              name: widget.personConditions[index]['name_id'],
+              description: widget.personConditions[index]['description'],
+            ),
+          ],
+        );
       },
     );
   }
