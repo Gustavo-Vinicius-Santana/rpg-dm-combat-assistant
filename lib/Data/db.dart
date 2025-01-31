@@ -341,7 +341,7 @@ class DB {
     character_participant_id INTEGER NOT NULL,
     condition_id INTEGER NOT NULL,
     FOREIGN KEY (character_participant_id) REFERENCES characters_participants(id),
-    FOREIGN KEY (condition_id) REFERENCES conditions(id)
+    FOREIGN KEY (condition_id) REFERENCES conditions(id) ON DELETE CASCADE
   )
   ''';
 
@@ -351,7 +351,7 @@ class DB {
     monster_participant_id INTEGER NOT NULL,
     condition_id INTEGER NOT NULL,
     FOREIGN KEY (monster_participant_id) REFERENCES monsters_participants(id),
-    FOREIGN KEY (condition_id) REFERENCES conditions(id)
+    FOREIGN KEY (condition_id) REFERENCES conditions(id) ON DELETE CASCADE
   )
   ''';
 }

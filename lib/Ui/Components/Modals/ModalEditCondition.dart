@@ -105,6 +105,11 @@ class _ModalEditConditionState extends State<ModalEditCondition> {
     }
   }
 
+  void _deleteCondition() async {
+    await conditions_repository.deleteCondition(widget.idCondition);
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -118,9 +123,22 @@ class _ModalEditConditionState extends State<ModalEditCondition> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              'Editar condição',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Editar condição',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    print('deletando condição');
+                    _deleteCondition();
+                  },
+                  color: Colors.grey,
+                )
+              ],
             ),
             const Divider(),
             const SizedBox(height: 8),
