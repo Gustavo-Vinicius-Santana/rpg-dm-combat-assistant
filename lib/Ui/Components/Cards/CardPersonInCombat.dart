@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:rpg_dm_combat_assistant/Data/repositories/Character_conditions_repository.dart';
+import 'package:rpg_dm_combat_assistant/Data/repositories/Monster_conditions_repository.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Icons/IconsSvg.dart';
 import 'package:rpg_dm_combat_assistant/Ui/Components/Modals/ModalEditPerson.dart';
 
@@ -12,10 +14,10 @@ class CardPersonInCombat extends StatefulWidget {
       required this.lifeActual,
       required this.type,
       required this.iniciative,
-      required this.conditions,
       required this.id,
       required this.combatId,
-      required this.isTurn});
+      required this.isTurn,
+      this.infoOpenModal});
   final int id;
   final int combatId;
   final String name;
@@ -25,15 +27,60 @@ class CardPersonInCombat extends StatefulWidget {
   final String armor;
   final int lifeMax;
   final int lifeActual;
-  final List conditions;
 
   final bool isTurn;
+
+  final List<dynamic>? infoOpenModal;
 
   @override
   State<CardPersonInCombat> createState() => _CardPersonInCombatState();
 }
 
 class _CardPersonInCombatState extends State<CardPersonInCombat> {
+  final CharacterConditionsRepository character_conditions_repository =
+      CharacterConditionsRepository();
+  final MonsterConditionsRepository monster_conditions_repository =
+      MonsterConditionsRepository();
+
+  List<String> _conditions = [];
+
+  void _loadConditions(type, idPerson) async {
+    if (type == 'character') {
+      final conditionData = await character_conditions_repository
+          .getCharacterConditions(idPerson);
+      setState(() {
+        _conditions = conditionData.map((e) => e['name_id'] as String).toList();
+      });
+    }
+
+    if (type == 'monster') {
+      final conditionData =
+          await monster_conditions_repository.getMonsterConditions(idPerson);
+      setState(() {
+        _conditions = conditionData.map((e) => e['name_id'] as String).toList();
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _loadConditions(widget.type, widget.id);
+
+    if (widget.infoOpenModal != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        print("Conteúdo de infoOpenModal: ${widget.infoOpenModal}");
+        if (widget.infoOpenModal?[0] == widget.id &&
+            widget.infoOpenModal?[1] == widget.type) {
+          openModal();
+        } else {
+          print('infoOpenModal contém valores inesperados ou inválidos!');
+        }
+      });
+    }
+  }
+
   void openModal() {
     showDialog(
       context: context,
@@ -42,12 +89,6 @@ class _CardPersonInCombatState extends State<CardPersonInCombat> {
           personId: widget.id,
           combatId: widget.combatId,
           personType: widget.type,
-          personName: widget.name,
-          personIniciative: widget.iniciative,
-          personLifeMax: widget.lifeMax,
-          personLifeActual: widget.lifeActual,
-          personArmor: widget.armor,
-          personConditions: widget.conditions,
         );
       },
     );
@@ -161,31 +202,32 @@ class _CardPersonInCombatState extends State<CardPersonInCombat> {
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (widget.conditions.isNotEmpty) ...[
-                    for (var condition in widget.conditions)
-                      Container(
-                        margin: const EdgeInsets.only(right: 8),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(8),
+              Wrap(
+                spacing: 8, // Espaço horizontal entre os itens
+                runSpacing: 8, // Espaço vertical entre as linhas
+                alignment: WrapAlignment.center, // Centraliza os itens na linha
+                children: _conditions.isNotEmpty
+                    ? _conditions.map((condition) {
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            condition,
+                            style: const TextStyle(fontSize: 12),
+                          ),
+                        );
+                      }).toList()
+                    : [
+                        const Text(
+                          "Não há condições do personagem",
+                          style: TextStyle(fontSize: 12, color: Colors.grey),
                         ),
-                        child: Text(
-                          condition,
-                          style: const TextStyle(fontSize: 12),
-                        ),
-                      ),
-                  ] else
-                    const Text(
-                      "Não há condições",
-                      style: TextStyle(fontSize: 12, color: Colors.grey),
-                    ),
-                ],
-              ),
+                      ],
+              )
             ],
           )
         ]),

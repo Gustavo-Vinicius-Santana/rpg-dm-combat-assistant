@@ -36,16 +36,36 @@ class _CombatScreenState extends State<CombatScreen> {
   int _turns = 0;
   int _rounds = 0;
 
+  List<dynamic>? openModal;
   int? id;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
     final arguments = ModalRoute.of(context)?.settings.arguments;
+
     if (arguments is int) {
       id = arguments;
       _loadCombat(id!);
+    } else if (arguments is Map<String, dynamic>) {
+      final idValue = arguments['id'];
+      final openModalValue = arguments['openModal'];
+
+      if (idValue is int) {
+        id = idValue;
+        _loadCombat(id!);
+      } else {
+        throw Exception("ID inválido ou não fornecido");
+      }
+
+      if (openModalValue is List<dynamic>) {
+        openModal = openModalValue;
+      } else {
+        throw Exception("openModal inválido ou não fornecido");
+      }
     } else {
-      throw Exception("ID não fornecido ou inválido");
+      throw Exception("Argumentos inválidos fornecidos para a rota");
     }
   }
 
@@ -239,6 +259,7 @@ class _CombatScreenState extends State<CombatScreen> {
               ),
             ),
             ListCombat(
+              idOpenModal: openModal,
               actualTurn: _turns,
               personsInCombat: _personsInCombat,
             ),

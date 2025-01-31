@@ -7,13 +7,15 @@ class InputText extends StatefulWidget {
       this.errorMessage,
       required this.maxLength,
       required this.placeholder,
-      required this.label});
+      required this.label,
+      this.maxLines});
   final TextEditingController controller;
   final int maxLength;
 
   final String? errorMessage;
   final String placeholder;
   final String label;
+  final int? maxLines;
 
   @override
   State<InputText> createState() => _InputTextState();
@@ -46,6 +48,7 @@ class _InputTextState extends State<InputText> {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.8,
       child: TextFormField(
+        maxLines: widget.maxLines,
         controller: widget.controller,
         maxLength: widget.maxLength,
         decoration: InputDecoration(
