@@ -18,9 +18,28 @@ class DB {
   _initDatabase() async {
     return await openDatabase(
       join(await getDatabasesPath(), 'rpg_dm_combat_assistant.db'),
-      version: 1,
+      version: 2,
       onCreate: _onCreate,
+      onUpgrade: _onUpgrade,
     );
+  }
+
+  _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < newVersion) {
+      // Exclui as tabelas antigas
+      await db.execute('DROP TABLE IF EXISTS characters');
+      await db.execute('DROP TABLE IF EXISTS monsters');
+      await db.execute('DROP TABLE IF EXISTS combats');
+      await db.execute('DROP TABLE IF EXISTS persons_in_combat');
+      await db.execute('DROP TABLE IF EXISTS monsters_participants');
+      await db.execute('DROP TABLE IF EXISTS characters_participants');
+      await db.execute('DROP TABLE IF EXISTS conditions');
+      await db.execute('DROP TABLE IF EXISTS monsters_conditions');
+      await db.execute('DROP TABLE IF EXISTS characters_conditions');
+
+      // Cria as tabelas novamente com a nova estrutura
+      await _onCreate(db, newVersion);
+    }
   }
 
   _onCreate(Database db, int version) async {
