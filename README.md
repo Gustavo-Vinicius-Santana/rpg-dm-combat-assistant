@@ -11,3 +11,4 @@ A aplicação **RPG DM Combat Assistant** foi desenvolvida para ajudar narradore
 - **Adicionar Combates**: Permite iniciar um combate, associando jogadores e inimigos a ele.
 - **Editar Jogadores, Inimigos e Combates**: O narrador pode editar os dados de jogadores, inimigos e combates durante o andamento da partida.
 - **Gerenciar Rodadas e Tempo de Combate**: O sistema ajuda a gerenciar as rodadas de combate, permitindo o controle do tempo de cada ação e a ordem dos turnos.
+- **Gerenciar condições dos personagens em combate**: Permite ao usuario criar, editar, excluir e atribuir a personagens condições.
